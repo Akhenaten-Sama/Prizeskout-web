@@ -4,7 +4,6 @@ import {
   ShoppingCartOutlined,
 } from "@ant-design/icons";
 
-const { Meta } = Card;
 const Store = () => {
   return (
     <div style={{ fontSize: "13px" }}>

@@ -20,11 +20,14 @@ const Header = () => {
         marginBottom: "5px",
       }}
     >
-      <div>Logo</div>
+      <div>
+        
+        <img style={{ width: "50px" }} src="logoo.png" />
+      </div>
       <div style={{ display: "flex" }}>
-        <LoginModal setOpenLogin={setOpenLogin} openLogin={openLogin}/>
+        <LoginModal setOpenLogin={setOpenLogin} openLogin={openLogin} />
         <div>
-          <LoginOutlined onClick={()=>setOpenLogin(true)}/>{" "}
+          <LoginOutlined onClick={() => setOpenLogin(true)} />{" "}
         </div>
         <ShoppingCartOutlined />
       </div>
