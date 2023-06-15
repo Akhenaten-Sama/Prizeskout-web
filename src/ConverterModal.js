@@ -105,7 +105,7 @@ const ConverterModal = ({ openConverter, setOpenConverter }) => {
           <div
             style={{ marginTop: "30px", fontSize: "13px", textAlign: "center" }}
           >
-            <b>{`${from} ${amount} is ${to} ${result}`}</b>
+            <b>{`${from} ${amount.toLocaleString()} is ${to} ${result.toLocaleString()}`}</b>
           </div>
         ) : resultsLoading ? (
           <div
