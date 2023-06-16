@@ -3,8 +3,8 @@ import { Input } from "antd";
 const { Search } = Input;
 
 
-export default function SearchComponent({term}) {
-    const onSearch = (value) => console.log(value);
+export default function SearchComponent({setResults}) {
+    const onSearch = (value) => setResults(value);
     return (
       <div >
         <Search

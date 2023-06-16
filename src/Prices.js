@@ -7,32 +7,30 @@ const gridStyle = {
   height: "150px",
   padding:0
 };
-const Prices = ({ results }) => {
+const Prices = ({ result }) => {
   return (
     <Card
       style={{ marginTop: "5px" }}
       title="Compare Prices From Different Stores!"
     >
-     
-      
       <Card.Grid style={gridStyle}>
-        <Store />
+        <Store store="amazon" term={result} />
       </Card.Grid>
       <Card.Grid style={gridStyle}>
-        <Store />
+        <Store store="ebay" term={result} />
       </Card.Grid>
       <Card.Grid style={gridStyle}>
-        <Store />
+        <Store store="google shopping" term={result} />
       </Card.Grid>
       <Card.Grid style={gridStyle}>
-        <Store />
+        <Store store="idealo" term={result} />
       </Card.Grid>
       <Card.Grid style={gridStyle}>
-        <Store />
+        <Store store="pricerunner" term={result} />
       </Card.Grid>
-      <Card.Grid style={gridStyle}>
-        <Store />
-      </Card.Grid>
+      {/* <Card.Grid style={gridStyle}>
+        <Store store="amazon" term={result} />
+      </Card.Grid> */}
     </Card>
   );
 };

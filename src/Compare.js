@@ -13,7 +13,6 @@ const [results, setResults] = useState(null)
     return (
       <div style={{ width: "90%", }}>
         <SearchComponent setResults={setResults} />
-      
         <Prices result={results} />
       </div>
     );
