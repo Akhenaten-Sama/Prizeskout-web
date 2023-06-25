@@ -11,7 +11,7 @@ import {
   requestPriceRunner,
 } from "./api";
 
-const Store = ({ term, store }) => {
+const AlibabaStore = ({ term, store }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -37,17 +37,6 @@ const Store = ({ term, store }) => {
   };
   console.log(result);
   const getResults = async (term) => {
-    switch (store) {
-      case "amazon":
-        try {
-          const req = await requestAmazon(term);
-          await checkandFetch(req.data.job_id);
-        } catch (error) {
-          console.log(error);
-          setLoading(false);
-        }
-        break;
-      case "ebay":
         try {
           const req = await requestEbay(term);
           await checkandFetch(req.data.job_id);
@@ -55,34 +44,8 @@ const Store = ({ term, store }) => {
           console.log(error);
           setLoading(false);
         }
-        break;
-      // case "idealo":
-      //   try {
-      //     const req = await requestIdealo(term);
-      //     await checkandFetch(req.data.job_id);
-      //   } catch (error) {
-      //     console.log(error);
-      //     setLoading(false);
-      //   }
-      //   break;
-      // case "google shopping":
-      //  try {
-      //    const req = await requestGoogle(term);
-      //    await checkandFetch(req.data.job_id);
-      //  } catch (error) {
-      //    console.log(error);
-      //    setLoading(false);
-      //  }
-      //   break;
-      // case "pricerunner":
-      // try {
-      //   const req = await requestPriceRunner(term);
-      //   await checkandFetch(req.data.job_id);
-      // } catch (error) {
-      //   console.log(error);
-      //   setLoading(false);
-      // }
-    }
+   
+     
   };
 
   return (
@@ -129,4 +92,4 @@ const Store = ({ term, store }) => {
   );
 };
 
-export default Store;
+export default AlibabaStore;

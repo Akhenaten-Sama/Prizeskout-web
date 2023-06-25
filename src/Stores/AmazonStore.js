@@ -11,7 +11,7 @@ import {
   requestPriceRunner,
 } from "./api";
 
-const Store = ({ term, store }) => {
+const AmazonStore = ({ term, store }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -129,4 +129,4 @@ const Store = ({ term, store }) => {
   );
 };
 
-export default Store;
+export default AmazonStore;

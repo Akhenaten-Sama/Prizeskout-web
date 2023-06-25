@@ -4,14 +4,11 @@ import { ShoppingCartOutlined } from "@ant-design/icons";
 import {
   checkJob,
   getSearchResults,
-  requestAmazon,
   requestEbay,
-  requestGoogle,
-  requestIdealo,
-  requestPriceRunner,
+ 
 } from "./api";
 
-const Store = ({ term, store }) => {
+const EbayStore = ({ term, store }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -37,17 +34,6 @@ const Store = ({ term, store }) => {
   };
   console.log(result);
   const getResults = async (term) => {
-    switch (store) {
-      case "amazon":
-        try {
-          const req = await requestAmazon(term);
-          await checkandFetch(req.data.job_id);
-        } catch (error) {
-          console.log(error);
-          setLoading(false);
-        }
-        break;
-      case "ebay":
         try {
           const req = await requestEbay(term);
           await checkandFetch(req.data.job_id);
@@ -55,35 +41,9 @@ const Store = ({ term, store }) => {
           console.log(error);
           setLoading(false);
         }
-        break;
-      // case "idealo":
-      //   try {
-      //     const req = await requestIdealo(term);
-      //     await checkandFetch(req.data.job_id);
-      //   } catch (error) {
-      //     console.log(error);
-      //     setLoading(false);
-      //   }
-      //   break;
-      // case "google shopping":
-      //  try {
-      //    const req = await requestGoogle(term);
-      //    await checkandFetch(req.data.job_id);
-      //  } catch (error) {
-      //    console.log(error);
-      //    setLoading(false);
-      //  }
-      //   break;
-      // case "pricerunner":
-      // try {
-      //   const req = await requestPriceRunner(term);
-      //   await checkandFetch(req.data.job_id);
-      // } catch (error) {
-      //   console.log(error);
-      //   setLoading(false);
-      // }
+      
     }
-  };
+  
 
   return (
     <a href={result?.url} style={{ fontSize: "13px" }}>
@@ -129,4 +89,4 @@ const Store = ({ term, store }) => {
   );
 };
 
-export default Store;
+export default EbayStore;
