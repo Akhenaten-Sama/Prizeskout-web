@@ -1,6 +1,6 @@
 {
     "name": "prizescout",
-    "description": "Compare prices across stores in one clcik!",
+    "description": "Compare prices across stores in one click!",
     "version": "1.0.0",
     "manifest_version": 3,
     "action":{

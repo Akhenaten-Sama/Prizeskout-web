@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Spin } from "antd";
+import { Card, Spin, Button } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import {
   checkJob,
@@ -9,9 +9,14 @@ import {
   requestGoogle,
   requestIdealo,
   requestPriceRunner,
-} from "./api";
-
-const AmazonStore = ({ term, store }) => {
+} from "../api";
+const gridStyle = {
+  width: "33.33333%",
+  textAlign: "center",
+  height: "150px",
+  padding: 0,
+};
+const AmazonStore = ({ term, store, setOpenConverter }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -86,46 +91,64 @@ const AmazonStore = ({ term, store }) => {
   };
 
   return (
-    <a href={result?.url} style={{ fontSize: "13px" }}>
-      <p>{store}</p>
-      {loading ? (
-        <div
-          style={{
-            margin: "20px 0",
-            marginBottom: "20px",
-            padding: "30px 50px",
-            textAlign: "center",
+    <Card
+      style={{ marginTop: "5px" }}
+      extra={
+        <Button style={{ width: "85px" }} onClick={() => setOpenConverter(true)}>
+           Converter
+        </Button>
+      }
+      title={`${store} Prices!`}
+    >
+      {result?.map((r) => (
+        <Card.Grid style={gridStyle}>
+          <a href={result?.url} style={{ fontSize: "13px" }}>
+            <p>{store}</p>
+            {loading ? (
+              <div
+                style={{
+                  margin: "20px 0",
+                  marginBottom: "20px",
+                  padding: "30px 50px",
+                  textAlign: "center",
 
-            borderRadius: "4px",
-          }}
-        >
-          <Spin />
-        </div>
-      ) : (
-        <div>
-          <img
-            alt="example"
-            style={{ height: "60px", width: "60px" }}
-            src={result?.image_url ? result?.image_url : "/empty_cart.jpeg"}
-          />
-          {result && (
-            <div
-              style={{
-                fontSize: "10px",
-                display: "flex",
-                padding: "0 10px",
-                justifyContent: "space-between",
-              }}
-            >
-              <p style={{ fontSize: "12px" }}>Price: {result?.min_price}</p>
-              <p>
-                <ShoppingCartOutlined size={12} />
-              </p>
-            </div>
-          )}
-        </div>
-      )}
-    </a>
+                  borderRadius: "4px",
+                }}
+              >
+                <Spin />
+              </div>
+            ) : (
+              <div>
+                <img
+                  alt="example"
+                  style={{ height: "60px", width: "60px" }}
+                  src={
+                    result?.image_url ? result?.image_url : "/empty_cart.jpeg"
+                  }
+                />
+                {result && (
+                  <div
+                    style={{
+                      fontSize: "10px",
+                      display: "flex",
+                      padding: "0 10px",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <p style={{ fontSize: "12px" }}>
+                      Price: {result?.min_price}
+                    </p>
+                    <p>
+                      <ShoppingCartOutlined size={12} />
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </a>
+        </Card.Grid>
+      ))}
+    </Card>
   );
 };
 

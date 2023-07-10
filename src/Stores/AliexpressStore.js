@@ -1,38 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Button } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import {
-  checkJob,
-  getSearchResults,
-  requestAmazon,
-  requestEbayNew,
-  requestGoogle,
-  requestIdealo,
-  requestPriceRunner,
-} from "../api";
+import { requestAliExpress } from "../api";
 
-const gridStyle = {
-  width: "33.33333%",
-  textAlign: "center",
-  height: "150px",
-  padding: 0,
-};
-
-const EbayStore = ({ term, store, setOpenConverter }) => {
+const AliexpressStore = ({ term, store, setOpenConverter }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     term && getResults(term);
   }, [term]);
-
+  const gridStyle = {
+    width: "33.33333%",
+    textAlign: "center",
+    height: "150px",
+    padding: 0,
+  };
   console.log(result);
   const getResults = (term) => {
     setLoading(true);
-    requestEbayNew(term)
+    requestAliExpress(term)
       .then((res) => {
         if (res.status === 200) {
           console.log(res.data);
-          setResult(res.data.products.slice(0, 8));
+          setResult(res.data.items.slice(0, 8));
           setLoading(false);
         }
       })
@@ -54,7 +44,7 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
     >
       {result?.map((r) => (
         <Card.Grid style={gridStyle}>
-          <a href={r?.url} style={{ fontSize: "13px" }}>
+          <a href={r?.detail_url} target="_blank" style={{ fontSize: "13px" }}>
             <p>{store}</p>
             {loading ? (
               <div
@@ -74,9 +64,9 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
                 <img
                   alt="example"
                   style={{ height: "60px", width: "60px" }}
-                  src={r?.thumbnail ? r?.thumbnail : "/empty_cart.jpeg"}
+                  src={r?.pic_url ? r?.pic_url : "/empty_cart.jpeg"}
                 />
-                {r && (
+                {result && (
                   <div
                     style={{
                       fontSize: "10px",
@@ -85,10 +75,7 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <p style={{ fontSize: "12px" }}>
-                      Price: {r?.price.currency}
-                      {r?.price.value}
-                    </p>
+                    <p style={{ fontSize: "12px" }}>Price: {r?.price}</p>
                     <p>
                       <ShoppingCartOutlined size={12} />
                     </p>
@@ -103,4 +90,4 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
   );
 };
 
-export default EbayStore;
+export default AliexpressStore;

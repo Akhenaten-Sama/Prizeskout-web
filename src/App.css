@@ -39,6 +39,10 @@ a { color: inherit; }
   color: #61dafb;
 }
 
+.ant-card-head-title{
+  flex:none !important;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

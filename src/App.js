@@ -12,13 +12,12 @@ function App() {
   const [openConverter,setOpenConverter] = useState(false)
   return (
     <div className="App">
-     <Header />
-<Compare />
-<Button style={{width:"90%", marginTop:"5px"}} onClick={()=>setOpenConverter(true)} >
-  Currency Converter
-</Button>
-<ConverterModal openConverter={openConverter} setOpenConverter={setOpenConverter} />
-      
+      <Header />
+      <Compare setOpenConverter={setOpenConverter} />
+      <ConverterModal
+        openConverter={openConverter}
+        setOpenConverter={setOpenConverter}
+      />
     </div>
   );
 }

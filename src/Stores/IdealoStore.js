@@ -9,7 +9,14 @@ import {
   requestGoogle,
   requestIdealo,
   requestPriceRunner,
-} from "./api";
+} from "../api";
+
+const gridStyle = {
+  width: "33.33333%",
+  textAlign: "center",
+  height: "150px",
+  padding: 0,
+};
 
 const IdealoStore = ({ term, store }) => {
   const [result, setResult] = useState(null);

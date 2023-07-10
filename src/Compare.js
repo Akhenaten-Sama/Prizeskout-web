@@ -3,17 +3,16 @@ import SearchComponent from './SearchComponent';
 import Prices from './Prices';
 
 
-export default function Compare(second) {
+export default function Compare({setOpenConverter}) {
 const [results, setResults] = useState(null)
 
     useEffect(() => {
-        
     }, []);
 
     return (
-      <div style={{ width: "90%", }}>
-        <SearchComponent setResults={setResults} />
-        <Prices result={results} />
+      <div style={{ width: "90%", overflowY: "auto", height: "500px" }}>
+        <SearchComponent results={results} setResults={setResults} />
+        <Prices setOpenConverter={setOpenConverter} result={results} />
       </div>
     );
 }
