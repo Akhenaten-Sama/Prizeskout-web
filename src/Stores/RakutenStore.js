@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Spin, Button } from "antd";
+import { Card, Spin, Button, Tooltip } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import {
   checkJob,
@@ -48,64 +48,85 @@ const RakutenStore = ({ term, store, setOpenConverter }) => {
       style={{ marginTop: "5px" }}
       title={`${store} Prices!`}
       extra={
-        <Button
-          style={{ width: "85px",  }}
-          onClick={() => setOpenConverter(true)}
-        >
-           Converter
-        </Button>
+        <Tooltip title="Currency Converter" color="#f06821">
+          <Button
+            style={{ width: "85px" }}
+            onClick={() => setOpenConverter(true)}
+          >
+            Converter
+          </Button>
+        </Tooltip>
       }
     >
-      {result?.map((r) => (
-        <Card.Grid style={gridStyle}>
-          <a href={r?.Product.productUrlPC} style={{ fontSize: "13px" }}>
-            <p>{store}</p>
-            {loading ? (
-              <div
-                style={{
-                  margin: "20px 0",
-                  marginBottom: "20px",
-                  padding: "30px 50px",
-                  textAlign: "center",
+      {loading ? (
+        <div
+          style={{
+            margin: "20px 0",
+            marginBottom: "20px",
+            padding: "30px 50px",
+            textAlign: "center",
 
-                  borderRadius: "4px",
-                }}
-              >
-                <Spin />
-              </div>
-            ) : (
-              <div>
-                <img
-                  alt="example"
-                  style={{ height: "60px", width: "60px" }}
-                  src={
-                    r?.Product.mediumImageUrl
-                      ? r?.Product.mediumImageUrl
-                      : "/empty_cart.jpeg"
-                  }
-                />
-                {r && (
-                  <div
-                    style={{
-                      fontSize: "10px",
-                      display: "flex",
-                      padding: "0 10px",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <p style={{ fontSize: "12px" }}>
-                      Price: {r?.Product.averagePrice}
-                    </p>
-                    <p>
-                      <ShoppingCartOutlined size={12} />
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-          </a>
-        </Card.Grid>
-      ))}
+            borderRadius: "4px",
+          }}
+        >
+          <Spin />
+        </div>
+      ) : (
+        result?.map((r) => (
+          <Card.Grid style={gridStyle}>
+            <div style={{ fontSize: "13px" }}>
+              <p>{store}</p>
+              {loading ? (
+                <div
+                  style={{
+                    margin: "20px 0",
+                    marginBottom: "20px",
+                    padding: "30px 50px",
+                    textAlign: "center",
+
+                    borderRadius: "4px",
+                  }}
+                >
+                  <Spin />
+                </div>
+              ) : (
+                <div>
+                  <a href={r?.Product.productUrlPC}>
+                    <img
+                      alt="example"
+                      style={{ height: "60px", width: "60px" }}
+                      src={
+                        r?.Product.mediumImageUrl
+                          ? r?.Product.mediumImageUrl
+                          : "/empty_cart.jpeg"
+                      }
+                    />
+                  </a>
+                  {r && (
+                    <div
+                      style={{
+                        fontSize: "10px",
+                        display: "flex",
+                        padding: "0 10px",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <p style={{ fontSize: "12px" }}>
+                        Price: {r?.Product.averagePrice}
+                      </p>
+                      <Tooltip title="Add to cart" color="#f06821">
+                        <p>
+                          <ShoppingCartOutlined size={14} />
+                        </p>
+                      </Tooltip>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </Card.Grid>
+        ))
+      )}
     </Card>
   );
 };

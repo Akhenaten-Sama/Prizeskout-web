@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Spin } from "antd";
+import { Card, Spin, Tooltip} from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { requestPingDuo } from "../api";
 
@@ -28,7 +28,7 @@ const PinDUoDuoStore = ({ term, store }) => {
   };
 
   return (
-    <a
+    <div
       href={`https://item.jd.com/${result?.num_iid}.html`}
       target="_blank"
       style={{ fontSize: "13px" }}
@@ -64,14 +64,16 @@ const PinDUoDuoStore = ({ term, store }) => {
               }}
             >
               <p style={{ fontSize: "12px" }}>Price: {result?.price}</p>
-              <p>
-                <ShoppingCartOutlined size={12} />
-              </p>
+              <Tooltip title="Add to cart" color="#f06821">
+                <p>
+                  <ShoppingCartOutlined size={14} />
+                </p>
+              </Tooltip>
             </div>
           )}
         </div>
       )}
-    </a>
+    </div>
   );
 };
 

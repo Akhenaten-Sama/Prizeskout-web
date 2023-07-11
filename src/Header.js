@@ -6,9 +6,11 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import LoginModal from "./LoginModal";
+import { Tooltip } from "antd";
+import WishListModal from "./WishList";
 const Header = () => {
   const [openLogin, setOpenLogin] = useState(false);
-   const [open, setOpen] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
 
   useEffect(() => {}, []);
   return (
@@ -21,15 +23,20 @@ const Header = () => {
       }}
     >
       <div>
-        
         <img style={{ width: "50px" }} src="logoo.png" />
       </div>
       <div style={{ display: "flex" }}>
         <LoginModal setOpenLogin={setOpenLogin} openLogin={openLogin} />
+        <WishListModal setOpenCart={setOpenCart} openCart={openCart} />
         <div>
-          <LoginOutlined onClick={() => setOpenLogin(true)} />{" "}
+          <Tooltip placement="left" title="Login" color="#f06821">
+            <LoginOutlined onClick={() => setOpenLogin(true)} />{" "}
+          </Tooltip>
         </div>
-        <ShoppingCartOutlined />
+
+        <Tooltip placement="left" title="Add To Cart" color="#f06821">
+          <ShoppingCartOutlined onClick={() => setOpenCart(true)} />
+        </Tooltip>
       </div>
     </div>
   );

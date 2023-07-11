@@ -42,6 +42,9 @@ a { color: inherit; }
 .ant-card-head-title{
   flex:none !important;
 }
+.ant-tabs-nav-more{
+  color:white !important;
+}
 
 @keyframes App-logo-spin {
   from {

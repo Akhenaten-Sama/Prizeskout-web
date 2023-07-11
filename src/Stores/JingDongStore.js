@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Spin, Button } from "antd";
+import { Card, Spin, Button,Tooltip } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { requestJingDong } from "../api";
 
@@ -38,60 +38,83 @@ const JingDongStore = ({ term, store, setOpenConverter }) => {
     <Card
       style={{ marginTop: "5px" }}
       extra={
-        <Button style={{ width: "85px" }} onClick={() => setOpenConverter(true)}>
-           Converter
-        </Button>
+        <Tooltip title="Currency Converter" color="#f06821">
+          <Button
+            style={{ width: "85px" }}
+            onClick={() => setOpenConverter(true)}
+          >
+            Converter
+          </Button>
+        </Tooltip>
       }
       title={`${store} Prices!`}
     >
-      {result?.map((r) => (
-        <Card.Grid style={gridStyle}>
-          <a
-            href={`https://item.jd.com/${r?.num_iid}.html`}
-            target="_blank"
-            style={{ fontSize: "13px" }}
-          >
-            <p>{store}</p>
-            {loading ? (
-              <div
-                style={{
-                  margin: "20px 0",
-                  marginBottom: "20px",
-                  padding: "30px 50px",
-                  textAlign: "center",
+      {loading ? (
+        <div
+          style={{
+            margin: "20px 0",
+            marginBottom: "20px",
+            padding: "30px 50px",
+            textAlign: "center",
 
-                  borderRadius: "4px",
-                }}
-              >
-                <Spin />
-              </div>
-            ) : (
-              <div>
-                <img
-                  alt="example"
-                  style={{ height: "60px", width: "60px" }}
-                  src={r?.pic_url ? r?.pic_url : "/empty_cart.jpeg"}
-                />
-                {r && (
-                  <div
-                    style={{
-                      fontSize: "10px",
-                      display: "flex",
-                      padding: "0 10px",
-                      justifyContent: "space-between",
-                    }}
+            borderRadius: "4px",
+          }}
+        >
+          <Spin />
+        </div>
+      ) : (
+        result?.map((r) => (
+          <Card.Grid style={gridStyle}>
+            <div style={{ fontSize: "13px" }}>
+              <p>{store}</p>
+              {loading ? (
+                <div
+                  style={{
+                    margin: "20px 0",
+                    marginBottom: "20px",
+                    padding: "30px 50px",
+                    textAlign: "center",
+
+                    borderRadius: "4px",
+                  }}
+                >
+                  <Spin />
+                </div>
+              ) : (
+                <div>
+                  <a
+                    href={`https://item.jd.com/${r?.num_iid}.html`}
+                    target="_blank"
                   >
-                    <p style={{ fontSize: "12px" }}>Price: {r?.price}</p>
-                    <p>
-                      <ShoppingCartOutlined size={12} />
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-          </a>
-        </Card.Grid>
-      ))}
+                    <img
+                      alt="example"
+                      style={{ height: "60px", width: "60px" }}
+                      src={r?.pic_url ? r?.pic_url : "/empty_cart.jpeg"}
+                    />
+                  </a>
+                  {r && (
+                    <div
+                      style={{
+                        fontSize: "10px",
+                        display: "flex",
+                        padding: "0 10px",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <p style={{ fontSize: "12px" }}>Price: {r?.price}</p>
+                      <Tooltip title="Add to cart" color="#f06821">
+                        <p>
+                          <ShoppingCartOutlined size={14} />
+                        </p>
+                      </Tooltip>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </Card.Grid>
+        ))
+      )}
     </Card>
   );
 };

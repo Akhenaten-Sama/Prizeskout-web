@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Card, Spin, Button } from "antd";
+import { Card, Spin, Button, Tooltip } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import {
-  checkJob,
-  getSearchResults,
-  requestAmazon,
-  requestEbay,
-  requestGoogle,
-  requestIdealo,
-  requestPriceRunner,
-} from "../api";
+import { requestAmazon, requestEbayNew } from "../api";
+
 const gridStyle = {
   width: "33.33333%",
   textAlign: "center",
   height: "150px",
   padding: 0,
 };
+
 const AmazonStore = ({ term, store, setOpenConverter }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -23,131 +17,109 @@ const AmazonStore = ({ term, store, setOpenConverter }) => {
     term && getResults(term);
   }, [term]);
 
-  const checkandFetch = async (jobId) => {
-    setLoading(true);
-    const ready = await checkJob(jobId);
-    if (ready.data.status === "finished") {
-      const result = await getSearchResults(jobId);
-      const data = await result.data.results;
-      console.log(data[0]);
-      console.log(data[0]?.content?.search_results[0]);
-      setResult(data[0]?.content?.search_results[0]);
-      setLoading(false);
-      return data[0];
-    } else if (ready.data.status !== "finished") {
-      setTimeout(async () => {
-        return await checkandFetch(jobId);
-      }, 5000);
-    }
-  };
   console.log(result);
-  const getResults = async (term) => {
-    switch (store) {
-      case "amazon":
-        try {
-          const req = await requestAmazon(term);
-          await checkandFetch(req.data.job_id);
-        } catch (error) {
-          console.log(error);
+  const getResults = (term) => {
+    setLoading(true);
+    requestAmazon(term)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res.data);
+          setResult(res.data.results.slice(0, 8));
           setLoading(false);
         }
-        break;
-      case "ebay":
-        try {
-          const req = await requestEbay(term);
-          await checkandFetch(req.data.job_id);
-        } catch (error) {
-          console.log(error);
-          setLoading(false);
-        }
-        break;
-      // case "idealo":
-      //   try {
-      //     const req = await requestIdealo(term);
-      //     await checkandFetch(req.data.job_id);
-      //   } catch (error) {
-      //     console.log(error);
-      //     setLoading(false);
-      //   }
-      //   break;
-      // case "google shopping":
-      //  try {
-      //    const req = await requestGoogle(term);
-      //    await checkandFetch(req.data.job_id);
-      //  } catch (error) {
-      //    console.log(error);
-      //    setLoading(false);
-      //  }
-      //   break;
-      // case "pricerunner":
-      // try {
-      //   const req = await requestPriceRunner(term);
-      //   await checkandFetch(req.data.job_id);
-      // } catch (error) {
-      //   console.log(error);
-      //   setLoading(false);
-      // }
-    }
+      })
+      .catch((res) => {
+        setLoading(false);
+        console.log(res);
+      });
   };
 
   return (
     <Card
       style={{ marginTop: "5px" }}
       extra={
-        <Button style={{ width: "85px" }} onClick={() => setOpenConverter(true)}>
-           Converter
-        </Button>
+        <Tooltip title="Currency Converter" color="#f06821">
+          <Button
+            style={{ width: "85px" }}
+            onClick={() => setOpenConverter(true)}
+          >
+            Converter
+          </Button>
+        </Tooltip>
       }
       title={`${store} Prices!`}
     >
-      {result?.map((r) => (
-        <Card.Grid style={gridStyle}>
-          <a href={result?.url} style={{ fontSize: "13px" }}>
-            <p>{store}</p>
-            {loading ? (
-              <div
-                style={{
-                  margin: "20px 0",
-                  marginBottom: "20px",
-                  padding: "30px 50px",
-                  textAlign: "center",
+      {loading ? (
+        <div
+          style={{
+            margin: "20px 0",
+            marginBottom: "20px",
+            padding: "30px 50px",
+            textAlign: "center",
 
-                  borderRadius: "4px",
-                }}
-              >
-                <Spin />
-              </div>
-            ) : (
-              <div>
-                <img
-                  alt="example"
-                  style={{ height: "60px", width: "60px" }}
-                  src={
-                    result?.image_url ? result?.image_url : "/empty_cart.jpeg"
-                  }
-                />
-                {result && (
-                  <div
-                    style={{
-                      fontSize: "10px",
-                      display: "flex",
-                      padding: "0 10px",
-                      justifyContent: "space-between",
-                    }}
+            borderRadius: "4px",
+          }}
+        >
+          <Spin />
+        </div>
+      ) : (
+        result?.map((r) => (
+          <Card.Grid style={gridStyle}>
+            <div style={{ fontSize: "13px" }}>
+              <p>{store}</p>
+              {loading ? (
+                <div
+                  style={{
+                    margin: "20px 0",
+                    marginBottom: "20px",
+                    padding: "30px 50px",
+                    textAlign: "center",
+
+                    borderRadius: "4px",
+                  }}
+                >
+                  <Spin />
+                </div>
+              ) : (
+                <div>
+                  <a
+                    target="_blank"
+                    href={`https://amazon.com/${r.title}/dp/${r.asin}`}
                   >
-                    <p style={{ fontSize: "12px" }}>
-                      Price: {result?.min_price}
-                    </p>
-                    <p>
-                      <ShoppingCartOutlined size={12} />
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-          </a>
-        </Card.Grid>
-      ))}
+                    <img
+                      alt="example"
+                      style={{ height: "60px", width: "60px" }}
+                      src={r?.images ? r?.images[2].image : "/empty_cart.jpeg"}
+                    />
+                  </a>
+
+                  {r && (
+                    <div
+                      style={{
+                        fontSize: "10px",
+                        display: "flex",
+                        padding: "0 10px",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <p style={{ fontSize: "10px" }}>
+                        Price:$ ${r?.price?.amount}
+                      </p>
+
+                      <Tooltip title="Add to cart" color="#f06821">
+                        <p>
+                          <ShoppingCartOutlined size={14} />
+                        </p>
+                      </Tooltip>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </Card.Grid>
+        ))
+      )}
     </Card>
   );
 };

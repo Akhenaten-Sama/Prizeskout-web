@@ -1,33 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Button, Tooltip } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import {
-  requestEbayNew,
+import { requestPricer } from "../api";
 
-} from "../api";
-
-const gridStyle = {
-  width: "33.33333%",
-  textAlign: "center",
-  height: "150px",
-  padding: 0,
-};
-
-const EbayStore = ({ term, store, setOpenConverter }) => {
+const WildCardStore = ({ term, store, setOpenConverter }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     term && getResults(term);
   }, [term]);
-
+  const gridStyle = {
+    width: "33.33333%",
+    textAlign: "center",
+    height: "150px",
+    padding: 0,
+  };
   console.log(result);
   const getResults = (term) => {
     setLoading(true);
-    requestEbayNew(term)
+    requestPricer(term)
       .then((res) => {
         if (res.status === 200) {
           console.log(res.data);
-          setResult(res.data.products.slice(0, 8));
+          const responses = res.data.filter(
+            (r) => r.shop !== " from eBay"
+          );
+          setResult(responses.slice(0, 50));
           setLoading(false);
         }
       })
@@ -68,8 +66,8 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
       ) : (
         result?.map((r) => (
           <Card.Grid style={gridStyle}>
-            <div href={r?.url} style={{ fontSize: "13px" }}>
-              <p>{store}</p>
+            <div style={{ fontSize: "13px" }}>
+              <p>{r.shop}</p>
               {loading ? (
                 <div
                   style={{
@@ -85,14 +83,15 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
                 </div>
               ) : (
                 <div>
-                  <a href={r?.url} target="_blank">
+                  <a href={r?.link} target="_blank">
+                    {" "}
                     <img
                       alt="example"
                       style={{ height: "60px", width: "60px" }}
-                      src={r?.thumbnail ? r?.thumbnail : "/empty_cart.jpeg"}
+                      src={r?.img ? r?.img : "/empty_cart.jpeg"}
                     />
                   </a>
-                  {r && (
+                  {result && (
                     <div
                       style={{
                         fontSize: "10px",
@@ -101,10 +100,7 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
                         justifyContent: "space-between",
                       }}
                     >
-                      <p style={{ fontSize: "12px" }}>
-                        Price: {r?.price.currency}
-                        {r?.price.value}
-                      </p>
+                      <p style={{ fontSize: "12px" }}>Price: {r?.price}</p>
                       <Tooltip title="Add to cart" color="#f06821">
                         <p>
                           <ShoppingCartOutlined size={14} />
@@ -122,4 +118,4 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
   );
 };
 
-export default EbayStore;
+export default WildCardStore;

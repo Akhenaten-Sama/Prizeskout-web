@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Spin, Button } from "antd";
+import { Card, Spin, Button, Tooltip } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { requestAliExpress } from "../api";
 
@@ -36,15 +36,33 @@ const AliexpressStore = ({ term, store, setOpenConverter }) => {
     <Card
       style={{ marginTop: "5px" }}
       extra={
-        <Button style={{ width: "85px" }} onClick={() => setOpenConverter(true)}>
-           Converter
-        </Button>
+        <Tooltip title="Currency Converter" color="#f06821">
+          <Button
+            style={{ width: "85px" }}
+            onClick={() => setOpenConverter(true)}
+          >
+            Converter
+          </Button>
+        </Tooltip>
       }
       title={`${store} Prices!`}
     >
-      {result?.map((r) => (
+        {loading ? (
+        <div
+          style={{
+            margin: "20px 0",
+            marginBottom: "20px",
+            padding: "30px 50px",
+            textAlign: "center",
+
+            borderRadius: "4px",
+          }}
+        >
+          <Spin />
+        </div>
+      ) : result?.map((r) => (
         <Card.Grid style={gridStyle}>
-          <a href={r?.detail_url} target="_blank" style={{ fontSize: "13px" }}>
+          <div style={{ fontSize: "13px" }}>
             <p>{store}</p>
             {loading ? (
               <div
@@ -61,11 +79,14 @@ const AliexpressStore = ({ term, store, setOpenConverter }) => {
               </div>
             ) : (
               <div>
-                <img
-                  alt="example"
-                  style={{ height: "60px", width: "60px" }}
-                  src={r?.pic_url ? r?.pic_url : "/empty_cart.jpeg"}
-                />
+                <a href={r?.detail_url} target="_blank">
+                  {" "}
+                  <img
+                    alt="example"
+                    style={{ height: "60px", width: "60px" }}
+                    src={r?.pic_url ? r?.pic_url : "/empty_cart.jpeg"}
+                  />
+                </a>
                 {result && (
                   <div
                     style={{
@@ -76,14 +97,16 @@ const AliexpressStore = ({ term, store, setOpenConverter }) => {
                     }}
                   >
                     <p style={{ fontSize: "12px" }}>Price: {r?.price}</p>
-                    <p>
-                      <ShoppingCartOutlined size={12} />
-                    </p>
+                    <Tooltip title="Add to cart" color="#f06821">
+                      <p>
+                        <ShoppingCartOutlined size={14} />
+                      </p>
+                    </Tooltip>
                   </div>
                 )}
               </div>
             )}
-          </a>
+          </div>
         </Card.Grid>
       ))}
     </Card>
