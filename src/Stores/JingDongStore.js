@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Button,Tooltip } from "antd";
-import { ShoppingCartOutlined } from "@ant-design/icons";
+import { ShoppingCartOutlined,ShareAltOutlined } from "@ant-design/icons";
 import { requestJingDong } from "../api";
+import SocialModal from "../SharePopup";
 
 const gridStyle = {
   width: "33.33333%",
   textAlign: "center",
   height: "150px",
   padding: 0,
-};
+}
 
 const JingDongStore = ({ term, store, setOpenConverter }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+   const [openSocial, setOpenSocial] = useState(false);
   useEffect(() => {
     term && getResults(term);
   }, [term]);
@@ -66,7 +68,12 @@ const JingDongStore = ({ term, store, setOpenConverter }) => {
         result?.map((r) => (
           <Card.Grid style={gridStyle}>
             <div style={{ fontSize: "13px" }}>
-              <p>{store}</p>
+              <p style={{ marginLeft: "10px" }}>
+                {store}{" "}
+                <Tooltip title="Share with friends!">
+                  <ShareAltOutlined onClick={() => setOpenSocial(true)} />
+                </Tooltip>
+              </p>
               {loading ? (
                 <div
                   style={{
@@ -112,6 +119,11 @@ const JingDongStore = ({ term, store, setOpenConverter }) => {
                 </div>
               )}
             </div>
+            <SocialModal
+              url={`https://item.jd.com/${r?.num_iid}.html`}
+              setOpenSocial={setOpenSocial}
+              openSocial={openSocial}
+            />
           </Card.Grid>
         ))
       )}

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Button, Tooltip } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
+import { ShareAltOutlined } from "@ant-design/icons";
 import {
   requestEbayNew,
 
 } from "../api";
+import SocialModal from "../SharePopup";
 
 const gridStyle = {
   width: "33.33333%",
@@ -16,6 +18,7 @@ const gridStyle = {
 const EbayStore = ({ term, store, setOpenConverter }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+   const [openSocial, setOpenSocial] = useState(false);
   useEffect(() => {
     term && getResults(term);
   }, [term]);
@@ -69,7 +72,12 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
         result?.map((r) => (
           <Card.Grid style={gridStyle}>
             <div href={r?.url} style={{ fontSize: "13px" }}>
-              <p>{store}</p>
+              <p style={{ marginLeft: "10px" }}>
+                {store}{" "}
+                <Tooltip title="Share with friends!">
+                  <ShareAltOutlined onClick={() => setOpenSocial(true)} />
+                </Tooltip>
+              </p>
               {loading ? (
                 <div
                   style={{
@@ -115,6 +123,11 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
                 </div>
               )}
             </div>
+            <SocialModal
+              url={r?.url}
+              setOpenSocial={setOpenSocial}
+              openSocial={openSocial}
+            />
           </Card.Grid>
         ))
       )}

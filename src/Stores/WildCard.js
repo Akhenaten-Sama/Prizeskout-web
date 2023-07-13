@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Button, Tooltip } from "antd";
-import { ShoppingCartOutlined } from "@ant-design/icons";
+import { ShoppingCartOutlined, ShareAltOutlined } from "@ant-design/icons";
 import { requestPricer } from "../api";
+import SocialModal from "../SharePopup";
 
 const WildCardStore = ({ term, store, setOpenConverter }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+   const [openSocial, setOpenSocial] = useState(false);
+   
   useEffect(() => {
     term && getResults(term);
   }, [term]);
@@ -67,7 +70,12 @@ const WildCardStore = ({ term, store, setOpenConverter }) => {
         result?.map((r) => (
           <Card.Grid style={gridStyle}>
             <div style={{ fontSize: "13px" }}>
-              <p>{r.shop}</p>
+              <p style={{ marginLeft: "10px" }}>
+                {r.shop}{" "}
+                <Tooltip title="Share with friends!">
+                  <ShareAltOutlined onClick={() => setOpenSocial(true)} />
+                </Tooltip>
+              </p>
               {loading ? (
                 <div
                   style={{
@@ -111,6 +119,11 @@ const WildCardStore = ({ term, store, setOpenConverter }) => {
                 </div>
               )}
             </div>
+            <SocialModal
+              url={r?.detail_url}
+              setOpenSocial={setOpenSocial}
+              openSocial={openSocial}
+            />
           </Card.Grid>
         ))
       )}

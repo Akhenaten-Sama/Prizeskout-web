@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Card, Spin, Button, Tooltip } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { requestAmazon, requestEbayNew } from "../api";
-
+import {ShareAltOutlined} from "@ant-design/icons"
+import SocialModal from "../SharePopup";
 const gridStyle = {
   width: "33.33333%",
   textAlign: "center",
@@ -13,6 +14,7 @@ const gridStyle = {
 const AmazonStore = ({ term, store, setOpenConverter }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+   const [openSocial, setOpenSocial] = useState(false);
   useEffect(() => {
     term && getResults(term);
   }, [term]);
@@ -66,7 +68,12 @@ const AmazonStore = ({ term, store, setOpenConverter }) => {
         result?.map((r) => (
           <Card.Grid style={gridStyle}>
             <div style={{ fontSize: "13px" }}>
-              <p>{store}</p>
+              <p style={{ marginLeft: "10px" }}>
+                {store}{" "}
+                <Tooltip title="Share with friends!">
+                  <ShareAltOutlined onClick={() => setOpenSocial(true)} />
+                </Tooltip>
+              </p>
               {loading ? (
                 <div
                   style={{
@@ -117,6 +124,11 @@ const AmazonStore = ({ term, store, setOpenConverter }) => {
                 </div>
               )}
             </div>
+            <SocialModal
+              url={`https://amazon.com/${r.title}/dp/${r.asin}`}
+              setOpenSocial={setOpenSocial}
+              openSocial={openSocial}
+            />
           </Card.Grid>
         ))
       )}

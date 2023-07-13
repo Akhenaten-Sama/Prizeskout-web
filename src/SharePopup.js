@@ -3,14 +3,27 @@ import { Button, Modal, Input, Space } from "antd";
 import { EyeTwoTone } from "@ant-design/icons";
 import {
   FacebookShareButton,
-  HatenaShareButton,
+  FacebookIcon,
+  LinkedinIcon,
+  TumblrIcon,
+  TelegramIcon,
+  TwitterIcon,
+  WhatsappIcon,
   LinkedinShareButton,
   TelegramShareButton,
   TumblrShareButton,
   TwitterShareButton,
   WhatsappShareButton,
-
 } from "react-share";
+
+const socials = [
+  FacebookShareButton,
+  LinkedinShareButton,
+  TelegramShareButton,
+  TumblrShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+];
 
 const SocialModal = ({ openSocial, setOpenSocial, url }) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -43,12 +56,49 @@ const SocialModal = ({ openSocial, setOpenSocial, url }) => {
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
       >
-        <Space direction="vertical">
-          {wishlist.length > 0 ? (
-            <div>WishList Components</div>
-          ) : (
-            <div>Your cart is empty!</div>
-          )}
+        <div style={{ marginBottom: "20px" }}>Share this product!!</div>
+        <Space
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+          direction="vertical"
+        >
+          <FacebookShareButton
+            quote={`This product was found using https://www.prizeskout.com/ use prizeskout today! check it out here ${url}`}
+            url="https://prizeskout.com"
+           
+          >
+            <FacebookIcon size={22} round />
+          </FacebookShareButton>
+          <LinkedinShareButton
+            summary={`This product was found using https://www.prizeskout.com/ use prizeskout today! check it out here ${url}`}
+            title="A goat can never be a lion"
+            url="https://prizeskout.com"
+            source="https://nairaland.com"
+          >
+            <LinkedinIcon size={22} round hashtag="#muo" />
+          </LinkedinShareButton>
+          <TwitterShareButton
+            url={`This product was found using https://www.prizeskout.com/ use prizeskout today! check it out here ${url}`}
+            quote="A goat can never be a lion"
+          >
+            <TwitterIcon size={22} round hashtag="#muo" />
+          </TwitterShareButton>
+          <WhatsappShareButton
+            url={`This product was found using https://www.prizeskout.com/ use prizeskout today! check it out here ${url}`}
+            quote="A goat can never be a lion"
+          >
+            <WhatsappIcon size={22} round hashtag="#muo" />
+          </WhatsappShareButton>
+          <TelegramShareButton
+            url={`This product was found using https://www.prizeskout.com/ use prizeskout today! check it out here ${url}`}
+            quote="A goat can never be a lion"
+          >
+            <TelegramIcon size={22} round />
+          </TelegramShareButton>
         </Space>
       </Modal>
     </>

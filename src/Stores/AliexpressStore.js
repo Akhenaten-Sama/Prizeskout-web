@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Button, Tooltip } from "antd";
-import { ShoppingCartOutlined } from "@ant-design/icons";
+import { ShoppingCartOutlined, ShareAltOutlined } from "@ant-design/icons";
 import { requestAliExpress } from "../api";
+import SocialModal from "../SharePopup";
 
 const AliexpressStore = ({ term, store, setOpenConverter }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [openSocial, setOpenSocial] = useState(false);
   useEffect(() => {
     term && getResults(term);
   }, [term]);
@@ -47,7 +49,7 @@ const AliexpressStore = ({ term, store, setOpenConverter }) => {
       }
       title={`${store} Prices!`}
     >
-        {loading ? (
+      {loading ? (
         <div
           style={{
             margin: "20px 0",
@@ -60,55 +62,68 @@ const AliexpressStore = ({ term, store, setOpenConverter }) => {
         >
           <Spin />
         </div>
-      ) : result?.map((r) => (
-        <Card.Grid style={gridStyle}>
-          <div style={{ fontSize: "13px" }}>
-            <p>{store}</p>
-            {loading ? (
-              <div
-                style={{
-                  margin: "20px 0",
-                  marginBottom: "20px",
-                  padding: "30px 50px",
-                  textAlign: "center",
+      ) : (
+        result?.map((r) => (
+          <Card.Grid style={gridStyle}>
+            <div style={{ fontSize: "13px" }}>
+              <p style={{ marginLeft: "10px" }}>
+                {store}{" "}
+                <Tooltip title="Share with friends!">
+                  <ShareAltOutlined onClick={() => setOpenSocial(true)} />
+                </Tooltip>
+              </p>
+              {loading ? (
+                <div
+                  style={{
+                    margin: "20px 0",
+                    marginBottom: "20px",
+                    padding: "30px 50px",
+                    textAlign: "center",
 
-                  borderRadius: "4px",
-                }}
-              >
-                <Spin />
-              </div>
-            ) : (
-              <div>
-                <a href={r?.detail_url} target="_blank">
-                  {" "}
-                  <img
-                    alt="example"
-                    style={{ height: "60px", width: "60px" }}
-                    src={r?.pic_url ? r?.pic_url : "/empty_cart.jpeg"}
-                  />
-                </a>
-                {result && (
-                  <div
-                    style={{
-                      fontSize: "10px",
-                      display: "flex",
-                      padding: "0 10px",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <p style={{ fontSize: "12px" }}>Price: {r?.price}</p>
-                    <Tooltip title="Add to cart" color="#f06821">
-                      <p>
-                        <ShoppingCartOutlined size={14} />
-                      </p>
-                    </Tooltip>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </Card.Grid>
-      ))}
+                    borderRadius: "4px",
+                  }}
+                >
+                  <Spin />
+                </div>
+              ) : (
+                <div>
+                  <a href={r?.detail_url} target="_blank">
+                    {" "}
+                    <img
+                      alt="example"
+                      style={{ height: "60px", width: "60px" }}
+                      src={r?.pic_url ? r?.pic_url : "/empty_cart.jpeg"}
+                    />
+                  </a>
+                  {result && (
+                    <div
+                      style={{
+                        fontSize: "10px",
+                        display: "flex",
+                        padding: "0 10px",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <p style={{ fontSize: "12px" }}>Price: {r?.price}</p>
+                      <Tooltip title="Add to cart" color="#f06821">
+                        <p>
+                          <ShoppingCartOutlined size={14} />
+                        </p>
+                      </Tooltip>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            <SocialModal
+              url={r?.detail_url}
+              setOpenSocial={setOpenSocial}
+              openSocial={openSocial}
+            />
+          </Card.Grid>
+        ))
+      )}
     </Card>
   );
 };
