@@ -115,6 +115,7 @@ const WalMartStore = ({ term, store, setOpenConverter }) => {
                         display: "flex",
                         padding: "0 10px",
                         justifyContent: "space-between",
+                        alignItems:"center"
                       }}
                     >
                       <p style={{ fontSize: "10px" }}>Price:$ {r?.price}</p>

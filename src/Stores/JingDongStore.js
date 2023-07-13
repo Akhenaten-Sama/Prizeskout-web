@@ -106,6 +106,7 @@ const JingDongStore = ({ term, store, setOpenConverter }) => {
                         display: "flex",
                         padding: "0 10px",
                         justifyContent: "space-between",
+                        alignItems:"center"
                       }}
                     >
                       <p style={{ fontSize: "12px" }}>Price: {r?.price}</p>
