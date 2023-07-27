@@ -18,6 +18,7 @@ const AliexpressStore = ({ term, store, setOpenConverter }) => {
     padding: 0,
   };
   console.log(result);
+  console.log(process.env.REACT_APP_CURRENCY_API_KEY);
   const getResults = (term) => {
     setLoading(true);
     requestAliExpress(term)

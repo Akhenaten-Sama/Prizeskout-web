@@ -1,20 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal, Input, Space } from "antd";
 import { EyeTwoTone } from "@ant-design/icons";
+import { getWishlist } from "./api";
 
-const WishListModal = ({ openCart, setOpenCart }) => {
+const WishListModal = ({ openCart, setOpenCart, user }) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [wishlist, setWishlist] = useState([])
   
+useEffect(()=>{
+  user && fetchWishlist()
+},[user])
 
-  const handleOk = () => {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setOpenCart(false);
-      setConfirmLoading(false);
-    }, 2000);
-  };
+console.log(user)
+  
 
+const fetchWishlist = ()=>{
+  getWishlist(user._id).then((res) => {
+    console.log(res.data.data);
+    setWishlist(res.data.data);
+  });
+}
   const handleCancel = () => {
     console.log("Clicked cancel button");
     setOpenCart(false);
@@ -30,12 +35,11 @@ const WishListModal = ({ openCart, setOpenCart }) => {
           width: "400px",
         }}
         width={300}
-        onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
       >
         <Space direction="vertical">
-          
+          <Button onClick={()=>fetchWishlist()}>Refresh</Button>
           {wishlist.length>0?
           <div>WishList Components</div>
           

@@ -1,3 +1,4 @@
+/*global chrome*/
 import React, { useEffect, useState } from "react";
 import {
   ShoppingCartOutlined,
@@ -8,7 +9,7 @@ import {
 import LoginModal from "./LoginModal";
 import { Tooltip } from "antd";
 import WishListModal from "./WishList";
-const Header = () => {
+const Header = ({ user, setUser }) => {
   const [openLogin, setOpenLogin] = useState(false);
   const [openCart, setOpenCart] = useState(false);
 
@@ -26,12 +27,32 @@ const Header = () => {
         <img style={{ width: "50px" }} src="logoo.png" />
       </div>
       <div style={{ display: "flex" }}>
-        <LoginModal setOpenLogin={setOpenLogin} openLogin={openLogin} />
-        <WishListModal setOpenCart={setOpenCart} openCart={openCart} />
+        <LoginModal
+          setUser={setUser}
+          setOpenLogin={setOpenLogin}
+          openLogin={openLogin}
+        />
+        <WishListModal setOpenCart={setOpenCart} user={user}openCart={openCart} />
         <div>
-          <Tooltip placement="left" title="Login" color="#f06821">
-            <LoginOutlined onClick={() => setOpenLogin(true)} />{" "}
-          </Tooltip>
+          {!user ? (
+            <Tooltip placement="left" title="Login" color="#f06821">
+              <LoginOutlined onClick={() => setOpenLogin(true)} />{" "}
+            </Tooltip>
+          ) : (
+            <Tooltip
+              placement="left"
+              title=" Click here to signout"
+              color="#f06821"
+            >
+              <LogoutOutlined
+                onClick={() =>
+                  chrome.storage.sync.set({ user: null }).then(() => {
+                    setUser(null);
+                  })
+                }
+              />{" "}
+            </Tooltip>
+          )}
         </div>
 
         <Tooltip placement="left" title="Add To Cart" color="#f06821">

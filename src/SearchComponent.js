@@ -3,7 +3,7 @@ import { Input } from "antd";
 const { Search } = Input;
 
 
-export default function SearchComponent({setResults, result}) {
+export default function SearchComponent({setResults, user}) {
   
     const onSearch = (value) => setResults(value);
     return (
@@ -12,7 +12,8 @@ export default function SearchComponent({setResults, result}) {
           placeholder="input search term"
           enterButton="Search"
           size="large"
-          style={{ color: "#f06821" }}
+          disabled={!user}
+          style={{ color:user? "#f06821":"white" }}
           onSearch={onSearch}
         />
       </div>

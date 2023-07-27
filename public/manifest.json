@@ -1,14 +1,15 @@
 {
-    "name": "prizescout",
-    "description": "Compare prices across stores in one click!",
-    "version": "1.0.0",
-    "manifest_version": 3,
-    "action":{
-        "default_title": "prizescout",
-        "default_popup": "index.html",
-        "default_icon":{
-            "16": "logoo.png",
-            "128": "logoo.png"
-        }
+  "name": "prizescout",
+  "description": "Compare prices across stores in one click!",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "permissions": ["storage"],
+  "action": {
+    "default_title": "prizescout",
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "logoo.png",
+      "128": "logoo.png"
     }
+  }
 }
