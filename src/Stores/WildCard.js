@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Button, Tooltip } from "antd";
 import { ShoppingCartOutlined, ShareAltOutlined } from "@ant-design/icons";
-import { requestPricer } from "../api";
+import { AddToWishlist, requestPricer } from "../api";
 import SocialModal from "../SharePopup";
 
 const WildCardStore = ({ term, store, setOpenConverter }) => {
@@ -18,6 +18,19 @@ const WildCardStore = ({ term, store, setOpenConverter }) => {
     height: "150px",
     padding: 0,
   };
+  
+  const AddToMyWishlist = (url,price,image,name, store,user)=>{
+  AddToWishlist({
+    userId: user._id,
+    url: url,
+    price: price,
+    image: image,
+    store: store,
+    name: name,
+  });
+
+}
+
   console.log(result);
   const getResults = (term) => {
     setLoading(true);
@@ -106,11 +119,23 @@ const WildCardStore = ({ term, store, setOpenConverter }) => {
                         display: "flex",
                         padding: "0 10px",
                         justifyContent: "space-between",
-                        alignItems:"center"
+                        alignItems: "center",
                       }}
                     >
                       <p style={{ fontSize: "12px" }}>Price: {r?.price}</p>
-                      <Tooltip title="Add to cart" color="#f06821">
+                      <Tooltip
+                        onClick={() =>
+                          AddToMyWishlist(
+                           r.link,
+                            r.price,
+                            r.img,
+                            r.name,
+                            store
+                          )
+                        }
+                        title="Add to cart"
+                        color="#f06821"
+                      >
                         <p>
                           <ShoppingCartOutlined size={14} />
                         </p>

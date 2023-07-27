@@ -10,6 +10,7 @@ import {
   requestGoogle,
   requestIdealo,
   requestPriceRunner,
+  AddToWishlist,
 } from "../api";
 import SocialModal from "../SharePopup";
 
@@ -20,7 +21,7 @@ const gridStyle = {
   padding: 0,
 };
 
-const RakutenStore = ({ term, store, setOpenConverter }) => {
+const RakutenStore = ({ term, store, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
    const [openSocial, setOpenSocial] = useState(false);
@@ -44,7 +45,17 @@ const RakutenStore = ({ term, store, setOpenConverter }) => {
         console.log(res);
       });
   };
-
+  const AddToMyWishlist = (url,price,image,name, store,)=>{
+  AddToWishlist({
+    userId: user._id,
+    url: url,
+    price: price,
+    image: image,
+    store: store,
+    name: name,
+  });
+  
+  }
   return (
     <Card
       style={{ marginTop: "5px" }}
@@ -116,13 +127,25 @@ const RakutenStore = ({ term, store, setOpenConverter }) => {
                         display: "flex",
                         padding: "0 10px",
                         justifyContent: "space-between",
-                        alignItems:"center"
+                        alignItems: "center",
                       }}
                     >
                       <p style={{ fontSize: "12px" }}>
                         Price: {r?.Product.averagePrice}
                       </p>
-                      <Tooltip title="Add to cart" color="#f06821">
+                      <Tooltip
+                        onClick={() =>
+                          AddToMyWishlist(
+                        r?.Product.productUrlPC,
+                            r.Product.averagePrice,
+                           r?.Product.mediumImageUrl,
+                            r.Product.name,
+                            store
+                          )
+                        }
+                        title="Add to cart"
+                        color="#f06821"
+                      >
                         <p>
                           <ShoppingCartOutlined size={14} />
                         </p>

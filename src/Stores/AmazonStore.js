@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Button, Tooltip } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import { requestAmazon, requestEbayNew } from "../api";
-import {ShareAltOutlined} from "@ant-design/icons"
+import {
+  AddToWishlist,
+  deleteWishlist,
+  requestAmazon,
+  requestEbayNew,
+} from "../api";
+import { ShareAltOutlined } from "@ant-design/icons";
 import SocialModal from "../SharePopup";
 const gridStyle = {
   width: "33.33333%",
@@ -11,10 +16,10 @@ const gridStyle = {
   padding: 0,
 };
 
-const AmazonStore = ({ term, store, setOpenConverter }) => {
+const AmazonStore = ({ term, store, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-   const [openSocial, setOpenSocial] = useState(false);
+  const [openSocial, setOpenSocial] = useState(false);
   useEffect(() => {
     term && getResults(term);
   }, [term]);
@@ -36,6 +41,16 @@ const AmazonStore = ({ term, store, setOpenConverter }) => {
       });
   };
 
+  const AddToMyWishlist = (url, price, image, name, store,) => {
+    AddToWishlist({
+      userId: user._id,
+      url: url,
+      price: price,
+      image: image,
+      store: store,
+      name: name,
+    });
+  };
   return (
     <Card
       style={{ marginTop: "5px" }}
@@ -114,7 +129,17 @@ const AmazonStore = ({ term, store, setOpenConverter }) => {
                         Price:$ ${r?.price?.amount}
                       </p>
 
-                      <Tooltip title="Add to cart" color="#f06821">
+                      <Tooltip
+                        onClick={AddToMyWishlist(
+                          `https://amazon.com/${r.title}/dp/${r.asin}`,
+                          r.price?.amount,
+                          r?.images[1].image,
+                          r.name,
+                          store
+                        )}
+                        title="Add to wishlist"
+                        color="#f06821"
+                      >
                         <p>
                           <ShoppingCartOutlined size={14} />
                         </p>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Button, Tooltip } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
+import { AddToWishlist } from "../api";
 // import {
 //   checkJob,
 //   getSearchResults,
@@ -17,14 +18,21 @@ const gridStyle = {
   height: "150px",
   padding: 0,
 };
-const AlibabaStore = ({ term, store, setOpenConverter }) => {
+const AlibabaStore = ({ term, store, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-  
-  }, [term]);
+  useEffect(() => {}, [term]);
 
- 
+  const AddToMyWishlist = (url, price, image, name, store) => {
+    AddToWishlist({
+      userId: user._id,
+      url: url,
+      price: price,
+      image: image,
+      store: store,
+      name: name,
+    });
+  };
   return (
     <Card
       style={{ marginTop: "5px" }}
@@ -80,7 +88,17 @@ const AlibabaStore = ({ term, store, setOpenConverter }) => {
                     <p style={{ fontSize: "12px" }}>
                       Price: {result?.min_price}
                     </p>
-                    <Tooltip title="Add to cart" color="#f06821">
+                    <Tooltip
+                      onClick={AddToMyWishlist(
+                        result.url,
+                        result.min_price,
+                        result.image_url,
+                        result.name,
+                        store
+                      )}
+                      title="Add to wishlist"
+                      color="#f06821"
+                    >
                       <p>
                         <ShoppingCartOutlined size={14} />
                       </p>

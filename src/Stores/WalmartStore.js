@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Button, Tooltip } from "antd";
 import { ShoppingCartOutlined ,ShareAltOutlined} from "@ant-design/icons";
-import { requestWalmart } from "../api";
+import { AddToWishlist, requestWalmart } from "../api";
 import SocialModal from "../SharePopup";
 
 const gridStyle = {
@@ -18,7 +18,16 @@ const WalMartStore = ({ term, store, setOpenConverter }) => {
   useEffect(() => {
     term && getResults(term);
   }, [term]);
-
+  
+const AddToMyWishlist = (url,price,image,name, store,user)=>{
+  AddToWishlist({
+    userId: user._id,
+    url: url,
+    price: price,
+    image: image,
+    store: store,
+    name: name,
+  })}
   const getResults = (term) => {
     setLoading(true);
     requestWalmart(term)
@@ -115,11 +124,23 @@ const WalMartStore = ({ term, store, setOpenConverter }) => {
                         display: "flex",
                         padding: "0 10px",
                         justifyContent: "space-between",
-                        alignItems:"center"
+                        alignItems: "center",
                       }}
                     >
                       <p style={{ fontSize: "10px" }}>Price:$ {r?.price}</p>
-                      <Tooltip title="Add to cart" color="#f06821">
+                      <Tooltip
+                        onClick={() =>
+                          AddToMyWishlist(
+                            r.url,
+                            r.price,
+                            r.image,
+                            r.name,
+                            store
+                          )
+                        }
+                        title="Add to wishlist"
+                        color="#f06821"
+                      >
                         <p>
                           <ShoppingCartOutlined size={14} />
                         </p>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Button, Tooltip } from "antd";
 import { ShoppingCartOutlined, ShareAltOutlined } from "@ant-design/icons";
-import { requestAliExpress } from "../api";
+import { AddToWishlist, deleteWishlist, requestAliExpress } from "../api";
 import SocialModal from "../SharePopup";
 
 const AliexpressStore = ({ term, store, setOpenConverter }) => {
@@ -11,6 +11,16 @@ const AliexpressStore = ({ term, store, setOpenConverter }) => {
   useEffect(() => {
     term && getResults(term);
   }, [term]);
+
+  const AddToMyWishlist = (url,price,image,name, store,user)=>{
+  AddToWishlist({
+    userId: user._id,
+    url: url,
+    price: price,
+    image: image,
+    store: store,
+    name: name,
+  })}
   const gridStyle = {
     width: "33.33333%",
     textAlign: "center",
@@ -107,7 +117,17 @@ const AliexpressStore = ({ term, store, setOpenConverter }) => {
                       }}
                     >
                       <p style={{ fontSize: "12px" }}>Price: {r?.price}</p>
-                      <Tooltip title="Add to cart" color="#f06821">
+                      <Tooltip
+                        onClick={AddToMyWishlist(
+                          result.detail_url,
+                          result.price,
+                          result.pic_url,
+                          result.name,
+                          store
+                        )}
+                        title="Add to wishlist"
+                        color="#f06821"
+                      >
                         <p>
                           <ShoppingCartOutlined size={14} />
                         </p>

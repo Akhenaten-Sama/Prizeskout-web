@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Button,Tooltip } from "antd";
 import { ShoppingCartOutlined,ShareAltOutlined } from "@ant-design/icons";
-import { requestJingDong } from "../api";
+import { AddToWishlist, deleteWishlist, requestJingDong } from "../api";
 import SocialModal from "../SharePopup";
 
 const gridStyle = {
@@ -11,7 +11,7 @@ const gridStyle = {
   padding: 0,
 }
 
-const JingDongStore = ({ term, store, setOpenConverter }) => {
+const JingDongStore = ({ term, store, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
    const [openSocial, setOpenSocial] = useState(false);
@@ -35,6 +35,16 @@ const JingDongStore = ({ term, store, setOpenConverter }) => {
         console.log(res);
       });
   };
+  
+  const AddToMyWishlist = (url,price,image,name, store,user)=>{
+  AddToWishlist({
+    userId: user._id,
+    url: url,
+    price: price,
+    image: image,
+    store: store,
+    name: name,
+  })}
 
   return (
     <Card
@@ -106,11 +116,21 @@ const JingDongStore = ({ term, store, setOpenConverter }) => {
                         display: "flex",
                         padding: "0 10px",
                         justifyContent: "space-between",
-                        alignItems:"center"
+                        alignItems: "center",
                       }}
                     >
                       <p style={{ fontSize: "12px" }}>Price: {r?.price}</p>
-                      <Tooltip title="Add to cart" color="#f06821">
+                      <Tooltip
+                        onClick={()=>AddToMyWishlist(
+                          `https://item.jd.com/${r?.num_iid}.html`,
+                          r.price,
+                          r.pic_url,
+                          r.name,
+                          store
+                        )}
+                        title="Add to cart"
+                        color="#f06821"
+                      >
                         <p>
                           <ShoppingCartOutlined size={14} />
                         </p>

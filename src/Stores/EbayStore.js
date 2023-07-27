@@ -3,6 +3,8 @@ import { Card, Spin, Button, Tooltip } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { ShareAltOutlined } from "@ant-design/icons";
 import {
+  AddToWishlist,
+  deleteWishlist,
   requestEbayNew,
 
 } from "../api";
@@ -39,7 +41,17 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
         console.log(res);
       });
   };
-
+  
+  const AddToMyWishlist = (url,price,image,name, store,user)=>{
+  AddToWishlist({
+    userId: user._id,
+    url: url,
+    price: price,
+    image: image,
+    store: store,
+    name: name,
+  });
+  }
   return (
     <Card
       style={{ marginTop: "5px" }}
@@ -107,14 +119,24 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
                         display: "flex",
                         padding: "0 10px",
                         justifyContent: "space-between",
-                        alignItems:'center'
+                        alignItems: "center",
                       }}
                     >
                       <p style={{ fontSize: "12px" }}>
                         Price: {r?.price.currency}
                         {r?.price.value}
                       </p>
-                      <Tooltip title="Add to cart" color="#f06821">
+                      <Tooltip
+                        onClick={AddToMyWishlist(
+                          r.url,
+                          r.price.value,
+                          r.thumbnail,
+                          r.name,
+                          store
+                        )}
+                        title="Add to cart"
+                        color="#f06821"
+                      >
                         <p>
                           <ShoppingCartOutlined size={14} />
                         </p>

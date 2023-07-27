@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Tooltip} from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import { requestPingDuo } from "../api";
+import { AddToWishlist, deleteWishlist, requestPingDuo } from "../api";
 
-const PinDUoDuoStore = ({ term, store }) => {
+const PinDUoDuoStore = ({ term, store, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -27,6 +27,15 @@ const PinDUoDuoStore = ({ term, store }) => {
       });
   };
 
+  const AddToMyWishlist = (url,price,image,name, store,)=>{
+  AddToWishlist({
+    userId: user._id,
+    url: url,
+    price: price,
+    image: image,
+    store: store,
+    name: name,
+  })}
   return (
     <div
       href={`https://item.jd.com/${result?.num_iid}.html`}
@@ -64,7 +73,19 @@ const PinDUoDuoStore = ({ term, store }) => {
               }}
             >
               <p style={{ fontSize: "12px" }}>Price: {result?.price}</p>
-              <Tooltip title="Add to cart" color="#f06821">
+              <Tooltip
+                onClick={() =>
+                  AddToMyWishlist(
+                    `https://item.jd.com/${r?.num_iid}.html`,
+                    r.price,
+                    r.pic_url,
+                    r.name,
+                    store
+                  )
+                }
+                title="Add to cart"
+                color="#f06821"
+              >
                 <p>
                   <ShoppingCartOutlined size={14} />
                 </p>
