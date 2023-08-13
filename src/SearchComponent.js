@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from "antd";
-const { Search } = Input;
+import { v4 as uuidv4 } from "uuid";
 
+const { Search } = Input;
+const sessionId  =uuidv4();
 
 export default function SearchComponent({setResults, user}) {
   
-    const onSearch = (value) => setResults(value);
+    const onSearch = (value) => setResults({value,sessionId });
     return (
       <div >
         <Search

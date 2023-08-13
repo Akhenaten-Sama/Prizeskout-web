@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Card, Spin, Button, Tooltip } from "antd";
+import { Card, Spin, Button, Tooltip, message } from "antd";
 import { ShoppingCartOutlined ,ShareAltOutlined} from "@ant-design/icons";
-import { AddToWishlist, requestWalmart } from "../api";
+import { AddToWishlist, requestSearch, requestWalmart } from "../api";
 import SocialModal from "../SharePopup";
 
 const gridStyle = {
@@ -11,15 +11,15 @@ const gridStyle = {
   padding: 0,
 };
 
-const WalMartStore = ({ term, store, setOpenConverter }) => {
+const WalMartStore = ({ term, store, setOpenConverter,user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
    const [openSocial, setOpenSocial] = useState(false);
   useEffect(() => {
-    term && getResults(term);
-  }, [term]);
+  term?.value && term.sessionId && getResults(term);
+  }, [term?.value]);
   
-const AddToMyWishlist = (url,price,image,name, store,user)=>{
+const AddToMyWishlist = (url,price,image,name, store,)=>{
   AddToWishlist({
     userId: user._id,
     url: url,
@@ -27,34 +27,49 @@ const AddToMyWishlist = (url,price,image,name, store,user)=>{
     image: image,
     store: store,
     name: name,
-  })}
+  })
+    .then((res) => {
+      message.success("added to wishlist");
+    })
+    .catch((err) => {
+      message.error("error adding item to wishlist");
+    });
+}
   const getResults = (term) => {
     setLoading(true);
-    requestWalmart(term)
-      .then((res) => {
-        if (res.status === 200) {
-          console.log(res.data);
-          const result =
-            res.data.item.props.pageProps.initialData.searchResult.itemStacks[0].items.slice(
-              0,
-              9
-            );
-          const modifiedRes = result.map((r) => {
-            return {
-              image: r.image,
-              url: `https://walmart.com${r.canonicalUrl}`,
-              price: r.price,
-              name: r.name,
-            };
-          });
-          setResult(modifiedRes);
-          setLoading(false);
-        }
-      })
-      .catch((res) => {
-        setLoading(false);
-        console.log(res);
-      });
+     requestSearch(term.value, user._id, store, term.sessionId, user.token)
+       .then((res) => {
+         if (res.status === 200) {
+            if (res.data.error) {
+              message.error(res.data.details);
+               setLoading(false);
+              return
+            }
+           console.log(res.data);
+           const result =
+             res.data.data.item.props.pageProps.initialData.searchResult.itemStacks[0].items.slice(
+               0,
+               15
+             );
+           const modifiedRes = result.map((r) => {
+             return {
+               image: r.image,
+               url: `https://walmart.com${r.canonicalUrl}`,
+               price: r.price,
+               name: r.name,
+             };
+           });
+           setResult(modifiedRes);
+           setLoading(false);
+         }
+            setLoading(false);
+       })
+       .catch((err) => {
+          console.log(err.response);
+          message.error(err?.response.data.details);
+         setLoading(false);
+        
+       });
   };
 
   return (
@@ -66,7 +81,7 @@ const AddToMyWishlist = (url,price,image,name, store,user)=>{
             style={{ width: "85px" }}
             onClick={() => setOpenConverter(true)}
           >
-            Converter
+            Currency
           </Button>
         </Tooltip>
       }
@@ -141,7 +156,11 @@ const AddToMyWishlist = (url,price,image,name, store,user)=>{
                         title="Add to wishlist"
                         color="#f06821"
                       >
-                        <p>
+                        <p
+                          style={{
+                            cursor: "pointer",
+                          }}
+                        >
                           <ShoppingCartOutlined size={14} />
                         </p>
                       </Tooltip>
@@ -151,7 +170,7 @@ const AddToMyWishlist = (url,price,image,name, store,user)=>{
               )}
             </div>
             <SocialModal
-              url={r?.detail_url}
+              url={r?.url}
               setOpenSocial={setOpenSocial}
               openSocial={openSocial}
             />

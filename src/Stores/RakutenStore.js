@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Spin, Button, Tooltip } from "antd";
+import { Card, Spin, Button, Tooltip, message } from "antd";
 import { ShoppingCartOutlined, ShareAltOutlined } from "@ant-design/icons";
 import {
   checkJob,
@@ -11,6 +11,7 @@ import {
   requestIdealo,
   requestPriceRunner,
   AddToWishlist,
+  requestSearch,
 } from "../api";
 import SocialModal from "../SharePopup";
 
@@ -26,23 +27,32 @@ const RakutenStore = ({ term, store, setOpenConverter, user }) => {
   const [loading, setLoading] = useState(false);
    const [openSocial, setOpenSocial] = useState(false);
   useEffect(() => {
-    term && getResults(term);
-  }, [term]);
+    term?.value && term.sessionId && getResults(term);
+  }, [term?.value]);
 
   console.log(result);
   const getResults = (term) => {
     setLoading(true);
-    requestRakuten(term)
+    requestSearch(term.value, user._id, store, term.sessionId, user.token)
       .then((res) => {
         if (res.status === 200) {
-            console.log(res.data);
-          setResult(res.data.Products.slice(0, 8));
+            if (res.data.error) {
+               setLoading(false);
+              message.error(res.data.details);
+              return
+            }
+          console.log(res.data);
+          setResult(res.data.data.Products.slice(0, 15));
           setLoading(false);
         }
+           setLoading(false);
       })
-      .catch((res) => {
+      .catch((err) => {
+        
+          console.log(err.response.data.details);
+          message.error(err?.response.data.details);
         setLoading(false);
-        console.log(res);
+        
       });
   };
   const AddToMyWishlist = (url,price,image,name, store,)=>{
@@ -53,7 +63,13 @@ const RakutenStore = ({ term, store, setOpenConverter, user }) => {
     image: image,
     store: store,
     name: name,
-  });
+  })
+    .then((res) => {
+      message.success("added to wishlist");
+    })
+    .catch((err) => {
+      message.error("error adding item to wishlist");
+    });
   
   }
   return (
@@ -66,7 +82,7 @@ const RakutenStore = ({ term, store, setOpenConverter, user }) => {
             style={{ width: "85px" }}
             onClick={() => setOpenConverter(true)}
           >
-            Converter
+            Currency
           </Button>
         </Tooltip>
       }
@@ -109,7 +125,7 @@ const RakutenStore = ({ term, store, setOpenConverter, user }) => {
                 </div>
               ) : (
                 <div>
-                  <a href={r?.Product.productUrlPC}>
+                  <a href={r?.Product.productUrlPC} target="_blank">
                     <img
                       alt="example"
                       style={{ height: "60px", width: "60px" }}
@@ -131,22 +147,26 @@ const RakutenStore = ({ term, store, setOpenConverter, user }) => {
                       }}
                     >
                       <p style={{ fontSize: "12px" }}>
-                        Price: {r?.Product.averagePrice}
+                        Price: JP¥{r?.Product.averagePrice}
                       </p>
                       <Tooltip
                         onClick={() =>
                           AddToMyWishlist(
-                        r?.Product.productUrlPC,
-                            r.Product.averagePrice,
-                           r?.Product.mediumImageUrl,
+                            r?.Product.productUrlPC,
+                            `¥${r.Product.averagePrice}`,
+                            r?.Product.mediumImageUrl,
                             r.Product.name,
                             store
                           )
                         }
-                        title="Add to cart"
+                        title="Add to wishlist"
                         color="#f06821"
                       >
-                        <p>
+                        <p
+                          style={{
+                            cursor: "pointer",
+                          }}
+                        >
                           <ShoppingCartOutlined size={14} />
                         </p>
                       </Tooltip>

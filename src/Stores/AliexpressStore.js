@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Card, Spin, Button, Tooltip } from "antd";
+import { Card, Spin, Button, Tooltip, message } from "antd";
 import { ShoppingCartOutlined, ShareAltOutlined } from "@ant-design/icons";
-import { AddToWishlist, deleteWishlist, requestAliExpress } from "../api";
+import { AddToWishlist, deleteWishlist, requestAliExpress, requestSearch } from "../api";
 import SocialModal from "../SharePopup";
 
-const AliexpressStore = ({ term, store, setOpenConverter }) => {
+const AliexpressStore = ({ term, store, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [openSocial, setOpenSocial] = useState(false);
   useEffect(() => {
-    term && getResults(term);
-  }, [term]);
+    term?.value && term.sessionId && getResults(term);
+  }, [term?.value]);
 
-  const AddToMyWishlist = (url,price,image,name, store,user)=>{
-  AddToWishlist({
-    userId: user._id,
-    url: url,
-    price: price,
-    image: image,
-    store: store,
-    name: name,
-  })}
+  const AddToMyWishlist = (url, price, image, name, store,) => {
+    AddToWishlist({
+      userId: user._id,
+      url: url,
+      price: price,
+      image: image,
+      store: store,
+      name: name,
+    }).then(res=>{
+        message.success("added to wishlist");
+    }).catch(err=>{
+      message.error("error adding item to wishlist")
+    })
+  };
   const gridStyle = {
     width: "33.33333%",
     textAlign: "center",
@@ -31,17 +36,25 @@ const AliexpressStore = ({ term, store, setOpenConverter }) => {
   console.log(process.env.REACT_APP_CURRENCY_API_KEY);
   const getResults = (term) => {
     setLoading(true);
-    requestAliExpress(term)
+    requestSearch(term.value, user._id, store, term.sessionId, user.token)
       .then((res) => {
         if (res.status === 200) {
+           if (res.data.error) {
+             message.error(res.data.details);
+              setLoading(false);
+             return
+           }
           console.log(res.data);
-          setResult(res.data.items.slice(0, 8));
-          setLoading(false);
+          setResult(res.data.data.items.slice(0, 15));
+        
         }
+           setLoading(false);
       })
-      .catch((res) => {
+      .catch((err) => {
         setLoading(false);
-        console.log(res);
+          console.log(err.response);
+          message.error(err?.response.data.message);
+        
       });
   };
 
@@ -54,7 +67,7 @@ const AliexpressStore = ({ term, store, setOpenConverter }) => {
             style={{ width: "85px" }}
             onClick={() => setOpenConverter(true)}
           >
-            Converter
+            Currency
           </Button>
         </Tooltip>
       }
@@ -116,19 +129,25 @@ const AliexpressStore = ({ term, store, setOpenConverter }) => {
                         alignItems: "center",
                       }}
                     >
-                      <p style={{ fontSize: "12px" }}>Price: {r?.price}</p>
+                      <p style={{ fontSize: "12px" }}>Price: ${r?.price}</p>
                       <Tooltip
-                        onClick={AddToMyWishlist(
-                          result.detail_url,
-                          result.price,
-                          result.pic_url,
-                          result.name,
-                          store
-                        )}
+                        onClick={() => {
+                          AddToMyWishlist(
+                            r.detail_url,
+                            `$${r.price}`,
+                            r.pic_url,
+                            r.original_title,
+                            store
+                          );
+                        }}
                         title="Add to wishlist"
                         color="#f06821"
                       >
-                        <p>
+                        <p
+                          style={{
+                            cursor: "pointer",
+                          }}
+                        >
                           <ShoppingCartOutlined size={14} />
                         </p>
                       </Tooltip>

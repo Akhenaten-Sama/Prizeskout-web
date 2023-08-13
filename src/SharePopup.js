@@ -67,35 +67,34 @@ const SocialModal = ({ openSocial, setOpenSocial, url }) => {
           direction="vertical"
         >
           <FacebookShareButton
-            quote={`This product was found using https://www.prizeskout.com/ use prizeskout today! check it out here ${url}`}
+            quote={`I found this product using https://www.prizeskout.com/  check it out here ${url}`}
             url="https://prizeskout.com"
-           
           >
             <FacebookIcon size={22} round />
           </FacebookShareButton>
           <LinkedinShareButton
-            summary={`This product was found using https://www.prizeskout.com/ use prizeskout today! check it out here ${url}`}
-            title="A goat can never be a lion"
+            summary={`I found this product using https://www.prizeskout.com/  check it out here ${url}`}
+            title="Prizeskout"
             url="https://prizeskout.com"
-            source="https://nairaland.com"
+            source={url}
           >
             <LinkedinIcon size={22} round hashtag="#muo" />
           </LinkedinShareButton>
           <TwitterShareButton
-            url={`This product was found using https://www.prizeskout.com/ use prizeskout today! check it out here ${url}`}
+            url={`I found this product using https://www.prizeskout.com/ use prizeskout today! check it out here ${url}`}
             quote="A goat can never be a lion"
           >
             <TwitterIcon size={22} round hashtag="#muo" />
           </TwitterShareButton>
           <WhatsappShareButton
-            url={`This product was found using https://www.prizeskout.com/ use prizeskout today! check it out here ${url}`}
-            quote="A goat can never be a lion"
+            url={`I found this product using https://www.prizeskout.com/  check it out here ${url}`}
+            quote="Prizeskout"
           >
             <WhatsappIcon size={22} round hashtag="#muo" />
           </WhatsappShareButton>
           <TelegramShareButton
-            url={`This product was found using https://www.prizeskout.com/ use prizeskout today! check it out here ${url}`}
-            quote="A goat can never be a lion"
+            url={`I found this product using https://www.prizeskout.com/  check it out here ${url}`}
+            quote="Prizeskout"
           >
             <TelegramIcon size={22} round />
           </TelegramShareButton>

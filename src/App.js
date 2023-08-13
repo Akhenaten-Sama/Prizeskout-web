@@ -3,16 +3,14 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import Compare from "./Compare";
 import Header from "./Header";
-import ConverterModal from "./ConverterModal";
+import ConverterModal from "./Modals/ConverterModal";
 import { Button } from "antd";
 
 function App() {
   const [user, setUser] = useState(null);
   const [openConverter, setOpenConverter] = useState(false);
   useEffect(() => {
-    chrome.storage.sync.get(["user"]).then((result) => {
-      setUser(result.user);
-    });
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
   console.log(user);
@@ -41,7 +39,7 @@ function App() {
             fontFamily: "inherit",
           }}
         >
-          Please Login to use this service!
+          Please login to use this service!
         </div>
       )}
       <Compare user={user} setOpenConverter={setOpenConverter} />

@@ -1,15 +1,25 @@
 {
-  "name": "prizescout",
-  "description": "Compare prices across stores in one click!",
-  "version": "1.0.0",
-  "manifest_version": 3,
-  "permissions": ["storage"],
-  "action": {
-    "default_title": "prizescout",
-    "default_popup": "index.html",
-    "default_icon": {
-      "16": "logoo.png",
-      "128": "logoo.png"
+  "short_name": "Prizeskout",
+  "name": "Prizeskout",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logoo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logoo.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
-  }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
 }

@@ -12,7 +12,7 @@ const [results, setResults] = useState(null)
     return (
       <div style={{ width: "90%", overflowY: "auto", height: "500px" }}>
         <SearchComponent user={user} results={results} setResults={setResults} />
-        <Prices setOpenConverter={setOpenConverter} result={results} />
+        <Prices user={user} setOpenConverter={setOpenConverter} result={results} />
       </div>
     );
 }

@@ -11,15 +11,13 @@ import WalMartStore from "./Stores/WalmartStore";
 import WildCardStore from "./Stores/WildCard";
 import AmazonStore from "./Stores/AmazonStore";
 const stores = [
-  "Amazon",
-  "Aliexpress",
   "Ebay",
   "Walmart",
+  "Aliexpress",
+  "Amazon",
   "WildCard",
   "Rakuten",
   "Jingdong",
-  "Alibaba",
-  "Idealo",
 ];
 const gridStyle = {
   width: "33.33333%",
@@ -28,17 +26,18 @@ const gridStyle = {
   padding: 0,
 };
 
-const Prices = ({ result, setOpenConverter }) => {
+const Prices = ({ result, setOpenConverter, user }) => {
   const getStore = (id) => {
     switch (id) {
       case "Alibaba":
-       return (
-         <AlibabaStore
-           setOpenConverter={setOpenConverter}
-           term={result}
-           store={id}
-         />
-       );
+        return (
+          <AlibabaStore
+            setOpenConverter={setOpenConverter}
+            term={result}
+            store={id}
+            user={user}
+          />
+        );
 
       case "Walmart":
         return (
@@ -46,11 +45,13 @@ const Prices = ({ result, setOpenConverter }) => {
             setOpenConverter={setOpenConverter}
             term={result}
             store={id}
+            user={user}
           />
         );
       case "WildCard":
         return (
           <WildCardStore
+            user={user}
             setOpenConverter={setOpenConverter}
             term={result}
             store={id}
@@ -58,17 +59,19 @@ const Prices = ({ result, setOpenConverter }) => {
         );
 
       case "Aliexpress":
-       return (
-         <AliexpressStore
-           setOpenConverter={setOpenConverter}
-           term={result}
-           store={id}
-         />
-       );
+        return (
+          <AliexpressStore
+            user={user}
+            setOpenConverter={setOpenConverter}
+            term={result}
+            store={id}
+          />
+        );
 
       case "Amazon":
         return (
           <AmazonStore
+            user={user}
             setOpenConverter={setOpenConverter}
             term={result}
             store={id}
@@ -76,38 +79,32 @@ const Prices = ({ result, setOpenConverter }) => {
         );
 
       case "Rakuten":
-      return (
-        <RakutenStore
-          setOpenConverter={setOpenConverter}
-          term={result}
-          store={id}
-        />
-      );
+        return (
+          <RakutenStore
+            setOpenConverter={setOpenConverter}
+            term={result}
+            store={id}
+            user={user}
+          />
+        );
 
       case "Jingdong":
         return (
           <JingDongStore
+            user={user}
             setOpenConverter={setOpenConverter}
             term={result}
             store={id}
           />
         );
 
-      // case "Idealo":
-      //   return (
-      //     <IdealoStore
-      //       setOpenConverter={setOpenConverter}
-      //       term={result}
-      //       store={id}
-      //     />
-      //   );
-
-      default:
+      case "Ebay":
         return (
-          <AmazonStore
+          <EbayStore
             setOpenConverter={setOpenConverter}
             term={result}
             store={id}
+            user={user}
           />
         );
     }
@@ -115,7 +112,7 @@ const Prices = ({ result, setOpenConverter }) => {
   return (
     <div>
       <Tabs
-        defaultActiveKey="1"
+        defaultActiveKey="12"
         tabPosition={"top"}
         style={{
           color: "white",

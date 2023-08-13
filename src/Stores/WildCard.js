@@ -1,53 +1,67 @@
 import React, { useState, useEffect } from "react";
-import { Card, Spin, Button, Tooltip } from "antd";
+import { Card, Spin, Button, Tooltip, message } from "antd";
 import { ShoppingCartOutlined, ShareAltOutlined } from "@ant-design/icons";
-import { AddToWishlist, requestPricer } from "../api";
+import { AddToWishlist, requestPricer, requestSearch } from "../api";
 import SocialModal from "../SharePopup";
 
-const WildCardStore = ({ term, store, setOpenConverter }) => {
+const WildCardStore = ({ term, store, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-   const [openSocial, setOpenSocial] = useState(false);
-   
+  const [openSocial, setOpenSocial] = useState(false);
+
   useEffect(() => {
-    term && getResults(term);
-  }, [term]);
+    term?.value && term.sessionId && getResults(term);
+  }, [term?.value]);
   const gridStyle = {
     width: "33.33333%",
     textAlign: "center",
-    height: "150px",
+    height: "180px",
     padding: 0,
   };
-  
-  const AddToMyWishlist = (url,price,image,name, store,user)=>{
-  AddToWishlist({
-    userId: user._id,
-    url: url,
-    price: price,
-    image: image,
-    store: store,
-    name: name,
-  });
 
-}
+  const AddToMyWishlist = (url, price, image, name, store) => {
+    AddToWishlist({
+      userId: user._id,
+      url: url,
+      price: price,
+      image: image,
+      store: store,
+      name: name,
+    })
+      .then((res) => {
+        message.success("added to wishlist");
+      })
+      .catch((err) => {
+        message.error("error adding item to wishlist");
+      });
+  };
 
   console.log(result);
   const getResults = (term) => {
     setLoading(true);
-    requestPricer(term)
+    requestSearch(term.value, user._id, store, term.sessionId, user.token)
       .then((res) => {
+        
         if (res.status === 200) {
+            if (res.data.error) {
+              message.error(res.data.details);
+               setLoading(false);
+              return
+            }
           console.log(res.data);
-          const responses = res.data.filter(
+          const responses = res.data.data.filter(
             (r) => r.shop !== " from eBay"
           );
-          setResult(responses.slice(0, 50));
+          setResult(responses.slice(0, 100));
           setLoading(false);
         }
+           setLoading(false);
       })
-      .catch((res) => {
+      .catch((err) => {
+          console.log(err.response.data.details);
+          message.error(err?.response.data.details);
         setLoading(false);
-        console.log(res);
+        
       });
   };
 
@@ -60,7 +74,7 @@ const WildCardStore = ({ term, store, setOpenConverter }) => {
             style={{ width: "85px" }}
             onClick={() => setOpenConverter(true)}
           >
-            Converter
+            Currency
           </Button>
         </Tooltip>
       }
@@ -126,17 +140,21 @@ const WildCardStore = ({ term, store, setOpenConverter }) => {
                       <Tooltip
                         onClick={() =>
                           AddToMyWishlist(
-                           r.link,
+                            r.link,
                             r.price,
                             r.img,
-                            r.name,
-                            store
+                            r.title,
+                            r.shop
                           )
                         }
-                        title="Add to cart"
+                        title="Add to wishlist"
                         color="#f06821"
                       >
-                        <p>
+                        <p
+                          style={{
+                            cursor: "pointer",
+                          }}
+                        >
                           <ShoppingCartOutlined size={14} />
                         </p>
                       </Tooltip>
@@ -146,7 +164,7 @@ const WildCardStore = ({ term, store, setOpenConverter }) => {
               )}
             </div>
             <SocialModal
-              url={r?.detail_url}
+              url={r?.link}
               setOpenSocial={setOpenSocial}
               openSocial={openSocial}
             />

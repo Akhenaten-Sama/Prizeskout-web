@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spin, Tooltip} from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import { AddToWishlist, deleteWishlist, requestPingDuo } from "../api";
+import { AddToWishlist, deleteWishlist, requestPingDuo, requestSearch } from "../api";
 
 const PinDUoDuoStore = ({ term, store, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    term && getResults(term);
-  }, [term]);
+    term?.value && term.sessionId && getResults(term);
+  }, [term?.value]);
 
   console.log(result);
   const getResults = (term) => {
     setLoading(true);
-    requestPingDuo(term)
-      .then((res) => {
-        if (res.status === 200) {
-          console.log(res.data);
-          setResult(res.data.items[0]);
-          setLoading(false);
-        }
-      })
-      .catch((res) => {
-        setLoading(false);
-        console.log(res);
-      });
+   requestSearch(term.value, user._id, store, term.sessionId, user.token)
+     .then((res) => {
+       if (res.status === 200) {
+         console.log(res.data);
+         setResult(res.data.data.items[0]);
+         setLoading(false);
+       }
+     })
+     .catch((res) => {
+       setLoading(false);
+       console.log(res);
+     });
   };
 
   const AddToMyWishlist = (url,price,image,name, store,)=>{

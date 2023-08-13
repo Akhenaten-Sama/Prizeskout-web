@@ -1,34 +1,46 @@
 /*global chrome*/
 import React, { useState } from "react";
-import { Button, Modal, Input, Space } from "antd";
+import { Button, Modal, Input, Space, message } from "antd";
 import { EyeTwoTone } from "@ant-design/icons";
-import { login, signUp } from "./api";
+import { forgotPassword, login, signUp } from "../api";
 
-const LoginModal = ({ openLogin, setOpenLogin, setUser, }) => {
-  const [state, setState] = useState("login");
+const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
+  const [state, setState] = useState("Login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [forgotEmail, setForgotEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = React.useState(false);
+  const [openForget, setOpenForget] = useState(false);
 
+  const handleForget = (email) => {
+    forgotPassword({ email })
+      .then((res) => {
+        message.success("Password link has been sent to your mail");
+        setOpenForget(false);
+      })
+      .catch((err) => {
+        message.error(err.message);
+      });
+  };
   const handleLogin = (details) => {
     try {
-          setConfirmLoading(true);
+      setConfirmLoading(true);
 
       login(details)
         .then((res) => {
-       
-         localStorage.setItem("user", res.data.data )
+          localStorage.setItem("user", res.data.data )
+            setUser(JSON.parse(localStorage.getItem("user")));
           setConfirmLoading(false);
-          setOpenLogin(false)
-          setUser(JSON.parse(localStorage.getItem("user")));
+          setOpenLogin(false);
         })
         .catch((err) => {
-          console.log(err.message);
           setConfirmLoading(false);
-
+          console.log(err.response.data.message);
+          message.error(err?.response.data.message);
+          setConfirmLoading(false);
         });
     } catch (error) {
       console.log(error);
@@ -36,16 +48,24 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser, }) => {
   };
 
   const handleSignUp = (details) => {
-        setConfirmLoading(true);
-    signUp(details).then((res)=>{
-      
-localStorage.setItem(" user", res.data.data )
-      setConfirmLoading(false);
-      setOpenLogin(false);
-         setUser(JSON.parse(localStorage.getItem("user")));
-  }).catch(err=>{
-    console.log(err)
-  })
+    if (password !== confirmPassword) {
+      message.info("Password does not match");
+      return;
+    }
+    setConfirmLoading(true);
+    signUp(details)
+      .then((res) => {
+        localStorage.setItem("user", res.data.data )
+        setUser(JSON.parse(localStorage.getItem("user")));
+        setConfirmLoading(false);
+        setOpenLogin(false);
+      })
+      .catch((err) => {
+        setConfirmLoading(false);
+        console.log(err.response.data.message);
+        message.error(err?.response.data.message);
+        console.log(err);
+      });
   };
 
   const handleCancel = () => {
@@ -67,10 +87,10 @@ localStorage.setItem(" user", res.data.data )
         onCancel={handleCancel}
         footer={[
           <Button
-          loading={confirmLoading}
+            disabled={openForget}
+            loading={confirmLoading}
             onClick={() =>
-              
-              state == "login"
+              state == "Login"
                 ? handleLogin({ email, password })
                 : handleSignUp({ name, email, password })
             }
@@ -79,7 +99,7 @@ localStorage.setItem(" user", res.data.data )
           </Button>,
         ]}
       >
-        {state == "login" ? (
+        {state == "Login" ? (
           <Space direction="vertical">
             <Input
               type="text"
@@ -109,12 +129,45 @@ localStorage.setItem(" user", res.data.data )
                 {passwordVisible ? "Hide" : "Show"}
               </Button>
             </Space>
-            <div
-              style={{ fontSize: "12px", color: "red", cursor: "pointer" }}
-              onClick={() => setState("register")}
-            >
-              Signup Instead
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <div
+                style={{
+                  fontSize: "14px",
+                  color: "#f06821",
+                  cursor: "pointer",
+                  marginRight: "12px",
+                }}
+                onClick={() => setState("Register")}
+              >
+                SignUp Instead
+              </div>
+              <div
+                style={{
+                  fontSize: "14px",
+                  color: "#f06821",
+                  cursor: "pointer",
+                }}
+                onClick={() => setOpenForget(true)}
+              >
+                Forgot Password?
+              </div>
             </div>
+            {openForget && (
+              <div style={{ marginRight: "5px" }}>
+                <p>Please enter your email</p>
+                <Input
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  value={forgotEmail}
+                  placeholder="please enter your email"
+                />
+                <div style={{ display: "flex", marginTop: "5px" }}>
+                  <Button onClick={() => handleForget(forgotEmail)}>
+                    Send mail
+                  </Button>
+                  <Button onClick={() => setOpenForget(false)}>Close</Button>
+                </div>
+              </div>
+            )}
           </Space>
         ) : (
           <Space direction="vertical">
@@ -147,8 +200,8 @@ localStorage.setItem(" user", res.data.data )
               }}
             />
             <div
-              style={{ fontSize: "12px", color: "red", cursor: "pointer" }}
-              onClick={() => setState("login")}
+              style={{ fontSize: "14px", color: "#f06821", cursor: "pointer" }}
+              onClick={() => setState("Login")}
             >
               Login Instead
             </div>

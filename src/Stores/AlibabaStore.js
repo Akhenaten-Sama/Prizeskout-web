@@ -42,7 +42,7 @@ const AlibabaStore = ({ term, store, setOpenConverter, user }) => {
             style={{ width: "85px" }}
             onClick={() => setOpenConverter(true)}
           >
-            Converter
+           Currency
           </Button>
         </Tooltip>
       }
@@ -89,7 +89,7 @@ const AlibabaStore = ({ term, store, setOpenConverter, user }) => {
                       Price: {result?.min_price}
                     </p>
                     <Tooltip
-                      onClick={AddToMyWishlist(
+                      onClick={()=>AddToMyWishlist(
                         result.url,
                         result.min_price,
                         result.image_url,

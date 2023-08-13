@@ -5,13 +5,17 @@ import {
   HomeOutlined,
   LoginOutlined,
   LogoutOutlined,
+  PayCircleOutlined,
 } from "@ant-design/icons";
-import LoginModal from "./LoginModal";
+import LoginModal from "./Modals/LoginModal";
 import { Tooltip } from "antd";
-import WishListModal from "./WishList";
+import WishListModal from "./Modals/WishList";
+import SubscriptionModal from "./Modals/SubsriptionsModal";
+
 const Header = ({ user, setUser }) => {
   const [openLogin, setOpenLogin] = useState(false);
   const [openCart, setOpenCart] = useState(false);
+  const [openSub, setOpenSub] = useState(false);
 
   useEffect(() => {}, []);
   return (
@@ -24,7 +28,7 @@ const Header = ({ user, setUser }) => {
       }}
     >
       <div>
-        <img style={{ width: "50px" }} src="logoo.png" />
+        <img style={{ width: "60px" }} src="prizeskoutlogo.png" />
       </div>
       <div style={{ display: "flex" }}>
         <LoginModal
@@ -32,32 +36,50 @@ const Header = ({ user, setUser }) => {
           setOpenLogin={setOpenLogin}
           openLogin={openLogin}
         />
-        <WishListModal setOpenCart={setOpenCart} user={user}openCart={openCart} />
-        <div>
+        <WishListModal
+          setOpenCart={setOpenCart}
+          user={user}
+          openCart={openCart}
+        />
+        <SubscriptionModal
+          setOpenSub={setOpenSub}
+          user={user}
+          openSub={openSub}
+        />
+        <div style={{ display: "flex" }}>
           {!user ? (
             <Tooltip placement="left" title="Login" color="#f06821">
               <LoginOutlined onClick={() => setOpenLogin(true)} />{" "}
             </Tooltip>
           ) : (
-            <Tooltip
-              placement="left"
-              title=" Click here to signout"
-              color="#f06821"
+            <div
+              style={{
+                display: "flex",
+                width: "80px",
+                alignItems: "center",
+                justifyContent: "space-around",
+              }}
             >
-              <LogoutOutlined
-                onClick={() =>
-                  chrome.storage.sync.set({ user: null }).then(() => {
-                    setUser(null);
-                  })
-                }
-              />{" "}
-            </Tooltip>
+              <Tooltip placement="left" title="Subscriptions" color="#f06821">
+                <PayCircleOutlined onClick={() => setOpenSub(true)} />
+              </Tooltip>
+              <Tooltip placement="left" title="Wishlist" color="#f06821">
+                <ShoppingCartOutlined onClick={() => setOpenCart(true)} />
+              </Tooltip>
+              <Tooltip
+                placement="left"
+                title=" Click here to signout"
+                color="#f06821"
+              >
+                <LogoutOutlined
+                  onClick={() =>
+                  localStorage.setItem( 'user', null )
+                  }
+                />{" "}
+              </Tooltip>
+            </div>
           )}
         </div>
-
-        <Tooltip placement="left" title="Add To Cart" color="#f06821">
-          <ShoppingCartOutlined onClick={() => setOpenCart(true)} />
-        </Tooltip>
       </div>
     </div>
   );

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Card, Spin, Button, Tooltip } from "antd";
+import { Card, Spin, Button, Tooltip, message } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import {
   AddToWishlist,
   deleteWishlist,
   requestAmazon,
   requestEbayNew,
+  requestSearch,
 } from "../api";
 import { ShareAltOutlined } from "@ant-design/icons";
 import SocialModal from "../SharePopup";
@@ -21,27 +22,36 @@ const AmazonStore = ({ term, store, setOpenConverter, user }) => {
   const [loading, setLoading] = useState(false);
   const [openSocial, setOpenSocial] = useState(false);
   useEffect(() => {
-    term && getResults(term);
-  }, [term]);
+    term?.value && term.sessionId && getResults(term);
+  }, [term?.value]);
 
   console.log(result);
   const getResults = (term) => {
     setLoading(true);
-    requestAmazon(term)
-      .then((res) => {
-        if (res.status === 200) {
-          console.log(res.data);
-          setResult(res.data.results.slice(0, 8));
-          setLoading(false);
-        }
-      })
-      .catch((res) => {
-        setLoading(false);
-        console.log(res);
-      });
+     requestSearch(term.value, user._id, store, term.sessionId, user.token)
+       .then((res) => {
+         if (res.status === 200) {
+            if (res.data.error) {
+              message.error(res.data.details);
+               setLoading(false);
+              return
+            }
+           console.log(res.data);
+           setResult(res.data.data.results.slice(0, 15));
+          
+         }
+            setLoading(false);
+       })
+       .catch((err) => {
+          console.log(err.response.data.details);
+          message.error(err?.response.data.details);
+         setLoading(false);
+        
+       });
   };
+  
 
-  const AddToMyWishlist = (url, price, image, name, store,) => {
+  const AddToMyWishlist = (url, price, image, name, store) => {
     AddToWishlist({
       userId: user._id,
       url: url,
@@ -49,7 +59,13 @@ const AmazonStore = ({ term, store, setOpenConverter, user }) => {
       image: image,
       store: store,
       name: name,
-    });
+    })
+      .then((res) => {
+        message.success("added to wishlist");
+      })
+      .catch((err) => {
+        message.error("error adding item to wishlist");
+      });
   };
   return (
     <Card
@@ -60,7 +76,7 @@ const AmazonStore = ({ term, store, setOpenConverter, user }) => {
             style={{ width: "85px" }}
             onClick={() => setOpenConverter(true)}
           >
-            Converter
+            Currency
           </Button>
         </Tooltip>
       }
@@ -126,21 +142,28 @@ const AmazonStore = ({ term, store, setOpenConverter, user }) => {
                       }}
                     >
                       <p style={{ fontSize: "10px" }}>
-                        Price:$ ${r?.price?.amount}
+                        Price:$ {r?.price?.amount}
                       </p>
 
                       <Tooltip
-                        onClick={AddToMyWishlist(
-                          `https://amazon.com/${r.title}/dp/${r.asin}`,
-                          r.price?.amount,
-                          r?.images[1].image,
-                          r.name,
-                          store
-                        )}
+                        onClick={() =>
+                          AddToMyWishlist(
+                            `https://amazon.com/${r.title}/dp/${r.asin}`,
+                            `$${r.price?.amount}`,
+                            r?.images[1].image,
+                            r.title,
+                            store
+                          )
+                        }
+                      
                         title="Add to wishlist"
                         color="#f06821"
                       >
-                        <p>
+                        <p
+                          style={{
+                            cursor: "pointer",
+                          }}
+                        >
                           <ShoppingCartOutlined size={14} />
                         </p>
                       </Tooltip>

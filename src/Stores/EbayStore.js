@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Card, Spin, Button, Tooltip } from "antd";
+import { Card, Spin, Button, Tooltip, message } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { ShareAltOutlined } from "@ant-design/icons";
 import {
   AddToWishlist,
   deleteWishlist,
   requestEbayNew,
+  requestSearch,
 
 } from "../api";
 import SocialModal from "../SharePopup";
@@ -17,32 +18,40 @@ const gridStyle = {
   padding: 0,
 };
 
-const EbayStore = ({ term, store, setOpenConverter }) => {
+const EbayStore = ({ term, store, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
    const [openSocial, setOpenSocial] = useState(false);
   useEffect(() => {
-    term && getResults(term);
-  }, [term]);
+    term?.value && term.sessionId && getResults(term);
+  }, [term?.value]);
 
   console.log(result);
   const getResults = (term) => {
     setLoading(true);
-    requestEbayNew(term)
-      .then((res) => {
-        if (res.status === 200) {
-          console.log(res.data);
-          setResult(res.data.products.slice(0, 8));
-          setLoading(false);
-        }
-      })
-      .catch((res) => {
-        setLoading(false);
-        console.log(res);
-      });
+     requestSearch(term.value, user._id, store, term.sessionId, user.token)
+       .then((res) => {
+         if (res.status === 200) {
+            if (res.data.error) {
+              message.error(res.data.details);
+               setLoading(false);
+              return
+            }
+           console.log(res.data);
+           setResult(res.data.data.products.slice(0, 15));
+          
+         }
+            setLoading(false);
+       })
+       .catch((err) => {
+          console.log(err.response.data.details);
+          message.error(err?.response.data.details);
+         setLoading(false);
+        
+       });
   };
   
-  const AddToMyWishlist = (url,price,image,name, store,user)=>{
+  const AddToMyWishlist = (url,price,image,name, store,)=>{
   AddToWishlist({
     userId: user._id,
     url: url,
@@ -50,7 +59,13 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
     image: image,
     store: store,
     name: name,
-  });
+  })
+    .then((res) => {
+      message.success("added to wishlist");
+    })
+    .catch((err) => {
+      message.error("error adding item to wishlist");
+    });
   }
   return (
     <Card
@@ -61,7 +76,7 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
             style={{ width: "85px" }}
             onClick={() => setOpenConverter(true)}
           >
-            Converter
+            Currency
           </Button>
         </Tooltip>
       }
@@ -127,17 +142,23 @@ const EbayStore = ({ term, store, setOpenConverter }) => {
                         {r?.price.value}
                       </p>
                       <Tooltip
-                        onClick={AddToMyWishlist(
-                          r.url,
-                          r.price.value,
-                          r.thumbnail,
-                          r.name,
-                          store
-                        )}
+                        onClick={() =>
+                          AddToMyWishlist(
+                            r.url,
+                            `$${r.price.value}`,
+                            r.thumbnail,
+                            r.title,
+                            store
+                          )
+                        }
                         title="Add to cart"
                         color="#f06821"
                       >
-                        <p>
+                        <p
+                          style={{
+                            cursor: "pointer",
+                          }}
+                        >
                           <ShoppingCartOutlined size={14} />
                         </p>
                       </Tooltip>
