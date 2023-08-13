@@ -72,8 +72,9 @@ const Header = ({ user, setUser }) => {
                 color="#f06821"
               >
                 <LogoutOutlined
-                  onClick={() =>
+                  onClick={() =>{
                   localStorage.setItem( 'user', null )
+                  setUser(null)}
                   }
                 />{" "}
               </Tooltip>
