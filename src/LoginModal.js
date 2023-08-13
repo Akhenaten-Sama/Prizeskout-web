@@ -20,7 +20,7 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser, }) => {
       login(details)
         .then((res) => {
        
-         localStorage.setItem("user", res.data.data )
+         localStorage.setItem("user", JSON.stringify(res.data.data) )
           setConfirmLoading(false);
           setOpenLogin(false)
           setUser(JSON.parse(localStorage.getItem("user")));
@@ -39,7 +39,7 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser, }) => {
         setConfirmLoading(true);
     signUp(details).then((res)=>{
       
-localStorage.setItem(" user", res.data.data )
+localStorage.setItem(" user", JSON.stringify(res.data.data));
       setConfirmLoading(false);
       setOpenLogin(false);
          setUser(JSON.parse(localStorage.getItem("user")));

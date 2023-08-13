@@ -31,9 +31,13 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
 
       login(details)
         .then((res) => {
-          localStorage.setItem("user", res.data.data )
-          console.log(res.data.data)
-            setUser((localStorage.getItem("user")));
+          localStorage.setItem("user", res.data.data);
+          console.log(res.data.data);
+          localStorage.setItem("user", JSON.stringify(res.data.data));
+          
+          const user = localStorage.getItem("user")
+          console.log(user);
+          setUser(JSON.parse(user));
           setConfirmLoading(false);
           setOpenLogin(false);
         })
@@ -44,7 +48,7 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
           setConfirmLoading(false);
         });
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   };
 
@@ -56,8 +60,10 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
     setConfirmLoading(true);
     signUp(details)
       .then((res) => {
-        localStorage.setItem("user", res.data.data )
-        setUser((localStorage.getItem("user")));
+         localStorage.setItem("user", res.data.data);
+         const user = localStorage.getItem("user");
+         console.log(user);
+         setUser(JSON.parse(user));
         setConfirmLoading(false);
         setOpenLogin(false);
       })
