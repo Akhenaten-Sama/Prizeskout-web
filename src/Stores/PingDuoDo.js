@@ -76,10 +76,10 @@ const PinDUoDuoStore = ({ term, store, user }) => {
               <Tooltip
                 onClick={() =>
                   AddToMyWishlist(
-                    `https://item.jd.com/${r?.num_iid}.html`,
-                    r.price,
-                    r.pic_url,
-                    r.name,
+                    `https://item.jd.com/${result?.num_iid}.html`,
+                    result.price,
+                    result.pic_url,
+                    result.name,
                     store
                   )
                 }
