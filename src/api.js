@@ -1,7 +1,7 @@
 /*global chrome*/
 import axios from "axios";
 
-let user = localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):null
+let user = localStorage.getItem("user")
 
 const backendUrl = "https://api.skoutpay.com/api"
 

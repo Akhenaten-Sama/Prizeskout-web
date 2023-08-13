@@ -10,7 +10,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [openConverter, setOpenConverter] = useState(false);
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+    setUser((localStorage.getItem("user")));
   }, []);
 
   console.log(user);
