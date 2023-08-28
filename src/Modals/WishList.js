@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Input, Space } from "antd";
+import { Button, Modal, Input, Space, message } from "antd";
 import { DeleteOutlined, ReloadOutlined } from "@ant-design/icons";
 import { deleteWishlist, getWishlist } from "../api";
 
@@ -17,6 +17,8 @@ const WishListModal = ({ openCart, setOpenCart, user }) => {
     getWishlist(user._id,user.token).then((res) => {
       console.log(res.data.data);
       setWishlist(res.data.data);
+    }).catch(err=>{
+      message.error("Unable to fetch wishlist")
     });
   };
   const handleCancel = () => {
@@ -32,6 +34,7 @@ const WishListModal = ({ openCart, setOpenCart, user }) => {
         open={openCart}
         style={{
           top: 20,
+         // right:-400,
           height: "550px",
           overflowX: "hidden",
           overflowY: "auto",

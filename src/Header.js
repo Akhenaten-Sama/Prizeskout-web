@@ -11,6 +11,8 @@ import LoginModal from "./Modals/LoginModal";
 import { Tooltip } from "antd";
 import WishListModal from "./Modals/WishList";
 import SubscriptionModal from "./Modals/SubsriptionsModal";
+import Navbar from "./Navbar";
+import { redirect } from "react-router-dom";
 
 const Header = ({ user, setUser }) => {
   const [openLogin, setOpenLogin] = useState(false);
@@ -27,9 +29,8 @@ const Header = ({ user, setUser }) => {
         marginBottom: "5px",
       }}
     >
-      <div>
-        <img style={{ width: "60px" }} src="prizeskoutlogo.png" />
-      </div>
+      
+      
       <div style={{ display: "flex" }}>
         <LoginModal
           setUser={setUser}
@@ -67,6 +68,7 @@ const Header = ({ user, setUser }) => {
                 <ShoppingCartOutlined onClick={() => setOpenCart(true)} />
               </Tooltip>
               <Tooltip
+              style={{cursor:"pointer"}}
                 placement="left"
                 title=" Click here to signout"
                 color="#f06821"
@@ -74,7 +76,10 @@ const Header = ({ user, setUser }) => {
                 <LogoutOutlined
                   onClick={() =>{
                   localStorage.setItem( 'user', null )
-                  setUser(null)}
+                  setUser(null)
+                 return redirect("/");
+                }
+                  
                   }
                 />{" "}
               </Tooltip>

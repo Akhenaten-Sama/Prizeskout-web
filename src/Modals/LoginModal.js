@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button, Modal, Input, Space, message } from "antd";
 import { EyeTwoTone } from "@ant-design/icons";
 import { forgotPassword, login, signUp } from "../api";
+import { redirect } from "react-router-dom";
 
 const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
   const [state, setState] = useState("Login");
@@ -31,19 +32,18 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
 
       login(details)
         .then((res) => {
-          localStorage.setItem("user", res.data.data);
-          console.log(res.data.data);
+          //localStorage.setItem("user", res.data.data);
+          //console.log(res.data.data);
           localStorage.setItem("user", JSON.stringify(res.data.data));
-          
           const user = localStorage.getItem("user")
-          console.log(user);
+         // console.log(user);
           setUser(JSON.parse(user));
           setConfirmLoading(false);
-          setOpenLogin(false);
+          redirect("/")
         })
         .catch((err) => {
           setConfirmLoading(false);
-          console.log(err?.response?.data.message);
+          console.log(err);
           message.error(err?.response?.data.message);
           setConfirmLoading(false);
         });
@@ -65,7 +65,7 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
          console.log(user);
          setUser(JSON.parse(user));
         setConfirmLoading(false);
-        setOpenLogin(false);
+       
       })
       .catch((err) => {
         setConfirmLoading(false);
@@ -77,39 +77,26 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
 
   const handleCancel = () => {
     console.log("Clicked cancel button");
-    setOpenLogin(false);
+   
   };
 
   return (
     <>
-      <Modal
-        title={state}
-        open={openLogin}
+      <div
         style={{
-          top: 20,
-          width: "400px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: "50px",
+          textAlign: "center",
         }}
-        width={300}
-        confirmLoading={confirmLoading}
-        onCancel={handleCancel}
-        footer={[
-          <Button
-            disabled={openForget}
-            loading={confirmLoading}
-            onClick={() =>
-              state == "Login"
-                ? handleLogin({ email, password })
-                : handleSignUp({ name, email, password })
-            }
-          >
-            Submit
-          </Button>,
-        ]}
       >
         {state == "Login" ? (
           <Space direction="vertical">
             <Input
               type="text"
+              size="large"
               name="email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
@@ -119,6 +106,7 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
               <Input.Password
                 type="text"
                 name="password"
+                size="large"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 placeholder="input password"
@@ -214,7 +202,18 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
             </div>
           </Space>
         )}
-      </Modal>
+        <Button
+          disabled={openForget}
+          loading={confirmLoading}
+          onClick={() =>
+            state == "Login"
+              ? handleLogin({ email, password })
+              : handleSignUp({ name, email, password })
+          }
+        >
+          Submit
+        </Button>
+      </div>
     </>
   );
 };

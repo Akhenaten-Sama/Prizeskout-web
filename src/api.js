@@ -25,11 +25,13 @@ export const signUp = (body) => {
   return axios.post(`${backendUrl}/user/signup`, body);
 };
 
-export const getSublist = () => {
+export const getSublist = (token) => {
+  userConfig.headers["x-access-token"] = token;
   return axios.get(`${backendUrl}/payments/sublist`, userConfig);
 };
 
-export const getActiveub = (userId) => {
+export const getActiveub = (userId, token) => {
+  userConfig.headers["x-access-token"] = token;
   return axios.get(
     `${backendUrl}/subscribe/active?userId=${userId}`,
     userConfig
@@ -44,7 +46,7 @@ export const getAllSubs = (userId) => {
 };
 
 export const getWishlist = (userId, token) => {
-  userConfig.headers["x-access-token"]=token
+  userConfig.headers["x-access-token"] = token;
   return axios.get(
     `${backendUrl}/wishlist/getwishlist?userId=${userId}`,
     userConfig
@@ -63,14 +65,34 @@ export const deleteWishlist = (userId, itemId) => {
 export const requestSearch = (term, userId, store, sessionId, token) => {
   userConfig.headers["x-access-token"] = token;
   return axios.get(
-    `${backendUrl}/search/search?userId=${userId}&term=${term}&store=${store}&sessionId=${sessionId}`, userConfig
+    `${backendUrl}/search/search?userId=${userId}&term=${term}&store=${store}&sessionId=${sessionId}`,
+    userConfig
   );
 };
 
-export const convertAmount = (from, to, amount,token) => {
-  userConfig.headers["x-access-token"]=token
+export const convertAmount = (from, to, amount, token) => {
+  userConfig.headers["x-access-token"] = token;
   return axios.get(
     `${backendUrl}/search/converter?&have=${from}&want=${to}&amount=${amount}`,
     userConfig
   );
+};
+
+export const subscribe = (body) => {
+  userConfig.headers["x-access-token"] = body.token;
+  delete body.token;
+  return axios.post(`${backendUrl}/subscribe/subscribe`, body, userConfig);
+};
+
+export const createIntent = (body) => {
+  return axios.post(
+    `${backendUrl}/payments/create-payment-intent`,
+    body,
+    userConfig
+  );
+};
+
+export const getConfig = (token) => {
+  userConfig.headers["x-access-token"] = token;
+  return axios.get(`${backendUrl}/payments/config`, userConfig);
 };

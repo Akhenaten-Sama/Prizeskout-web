@@ -20,8 +20,6 @@ html, body {
    font-family: "Volks";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  width:450px;
-  height:600px;
 }
 
 code {
