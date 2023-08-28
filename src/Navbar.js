@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./navbar.css";
 import { useState } from "react";
 import { ReactComponent as Hamburger } from "./assets/icons/hamburger.svg";
@@ -10,7 +10,7 @@ const Navbar = ({ user, setUser }) => {
   const toggleNavItems = () => {
     setShowNav(!showNav);
   };
-
+const navigate = useNavigate()
   return (
     <nav className="navbar">
       <div className="container">
@@ -25,12 +25,22 @@ const Navbar = ({ user, setUser }) => {
         <div className={`nav-elements  ${showNav && "active"}`}>
           <ul>
             <li>
-              <NavLink to="/">Home</NavLink>
+              <NavLink onClick={toggleNavItems} to="/">
+                Home
+              </NavLink>
             </li>
             <li>
-              <NavLink to="/subscriptions">Subscriptions</NavLink>
+              <NavLink onClick={toggleNavItems} to="/subscriptions">
+                Subscriptions
+              </NavLink>
             </li>
-            <li style={{ cursor: "pointer" }} onClick={() => setOpenCart(true)}>
+            <li
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setOpenCart(true);
+                toggleNavItems();
+              }}
+            >
               Wishlist
             </li>
             {user ? (
@@ -39,13 +49,17 @@ const Navbar = ({ user, setUser }) => {
                 onClick={() => {
                   localStorage.setItem("user", null);
                   setUser(null);
+                  toggleNavItems()
+                  navigate("/login");
                 }}
               >
                 Logout
               </li>
             ) : (
               <li>
-                <NavLink to="/login">Login</NavLink>
+                <NavLink onClick={toggleNavItems} to="/login">
+                  Login
+                </NavLink>
               </li>
             )}
           </ul>

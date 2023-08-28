@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button, Modal, Input, Space, message } from "antd";
 import { EyeTwoTone } from "@ant-design/icons";
 import { forgotPassword, login, signUp } from "../api";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 
 const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
   const [state, setState] = useState("Login");
@@ -26,6 +26,8 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
         message.error(err.message);
       });
   };
+
+  const navigate = useNavigate()
   const handleLogin = (details) => {
     try {
       setConfirmLoading(true);
@@ -39,7 +41,7 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
          // console.log(user);
           setUser(JSON.parse(user));
           setConfirmLoading(false);
-          window.redirect("/")
+          navigate("/")
         })
         .catch((err) => {
           setConfirmLoading(false);
