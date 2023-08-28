@@ -18,13 +18,19 @@ import { getActiveub, getSublist, subscribe } from "../api";
 import PriceCard from "../PriceCard";
 import Payment from "../Payment";
 import ThreeTierPricing from "../PriceWrapper";
+import { useNavigate } from "react-router-dom";
 
-const SubscriptionModal = ({ openSub, setOpenSub, user }) => {
+const SubscriptionModal = ({  user }) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [subscriptionList, setSubscriptionList] = useState([]);
   const [currentSub, setCurrentSub] = useState(null);
   const [amount, setAmount] = useState(null);
 
+const navigate = useNavigate()
+
+useEffect(() => {
+  !user && navigate("/login");
+});
   //either show list of subcriptions or checkout
   const [mode, setMode] = useState("list");
 

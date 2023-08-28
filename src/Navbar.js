@@ -1,16 +1,20 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import "./navbar.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReactComponent as Hamburger } from "./assets/icons/hamburger.svg";
 import WishListModal from "./Modals/WishList";
 
 const Navbar = ({ user, setUser }) => {
   const [showNav, setShowNav] = useState(false);
   const [openCart, setOpenCart] = useState(false);
+const navigate = useNavigate();
+
+
+
   const toggleNavItems = () => {
     setShowNav(!showNav);
   };
-const navigate = useNavigate()
+
   return (
     <nav className="navbar">
       <div className="container">
