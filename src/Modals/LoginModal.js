@@ -39,7 +39,7 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
          // console.log(user);
           setUser(JSON.parse(user));
           setConfirmLoading(false);
-          redirect("/")
+          window.redirect("/")
         })
         .catch((err) => {
           setConfirmLoading(false);

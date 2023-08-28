@@ -77,7 +77,7 @@ const Header = ({ user, setUser }) => {
                   onClick={() =>{
                   localStorage.setItem( 'user', null )
                   setUser(null)
-                 return redirect("/");
+                 return window.redirect("/");
                 }
                   
                   }
