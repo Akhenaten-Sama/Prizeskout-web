@@ -2,14 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Card, Spin, Button, Tooltip, message } from "antd";
 import { ShoppingCartOutlined, ShareAltOutlined } from "@ant-design/icons";
 import {
-  checkJob,
-  getSearchResults,
-  requestAmazon,
-  requestEbay,
-  requestRakuten,
-  requestGoogle,
-  requestIdealo,
-  requestPriceRunner,
   AddToWishlist,
   requestSearch,
 } from "../api";
@@ -103,13 +95,39 @@ const RakutenStore = ({ term, store,openConverter, setOpenConverter, user }) => 
       ) : (
         result?.map((r) => (
           <Card.Grid style={gridStyle}>
-            <div style={{ fontSize: "13px" }}>
-              <p style={{ marginLeft: "10px" }}>
-                {store}{" "}
+            <div
+              href={r?.url}
+              style={{
+                fontSize: "1px",
+                padding: "0px 20px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  fontSize: "10px",
+                  display: "flex",
+                  padding: "0 10px",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: "13px",
+                    width: "60%",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {r.Product.name}
+                </p>
                 <Tooltip title="Share with friends!">
                   <ShareAltOutlined onClick={() => setOpenSocial(true)} />
                 </Tooltip>
-              </p>
+              </div>
               {loading ? (
                 <div
                   style={{
@@ -128,7 +146,11 @@ const RakutenStore = ({ term, store,openConverter, setOpenConverter, user }) => 
                   <a href={r?.Product.productUrlPC} target="_blank">
                     <img
                       alt="example"
-                      style={{ height: "60px", width: "60px" }}
+                      style={{
+                        height: "100px",
+                        margin: "0 auto",
+                        width: "100px",
+                      }}
                       src={
                         r?.Product.mediumImageUrl
                           ? r?.Product.mediumImageUrl
@@ -139,6 +161,7 @@ const RakutenStore = ({ term, store,openConverter, setOpenConverter, user }) => 
                   {r && (
                     <div
                       style={{
+                        width: "100%",
                         fontSize: "10px",
                         display: "flex",
                         padding: "0 10px",

@@ -11,6 +11,12 @@ const gridStyle = {
   padding: 0,
 };
 
+const mobileGridStyle = {
+  width: "50%",
+  textAlign: "center",
+  height: "150px",
+  padding: 0,
+};
 const WalMartStore = ({ term, store, openConverter,setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -102,13 +108,31 @@ const WalMartStore = ({ term, store, openConverter,setOpenConverter, user }) => 
       ) : (
         result?.map((r) => (
           <Card.Grid style={gridStyle}>
-            <div style={{ fontSize: "13px" }}>
-              <p style={{ marginLeft: "10px" }}>
-                {store}{" "}
+            <div
+              href={r?.url}
+              style={{
+                fontSize: "13px",
+                padding: "0px 20px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  fontSize: "10px",
+                  display: "flex",
+                  padding: "0 10px",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <p style={{ fontSize: "13px", width:"60%", textOverflow:"ellipsis" }}>{  r.name}</p>
                 <Tooltip title="Share with friends!">
                   <ShareAltOutlined onClick={() => setOpenSocial(true)} />
                 </Tooltip>
-              </p>
+              </div>
               {loading ? (
                 <div
                   style={{
@@ -127,13 +151,14 @@ const WalMartStore = ({ term, store, openConverter,setOpenConverter, user }) => 
                   <a href={r?.url} target="_blank">
                     <img
                       alt="example"
-                      style={{ height: "60px", width: "60px" }}
+                      style={{ height: "100px",margin:"0 auto", width: "100px" }}
                       src={r?.image ? r?.image : "/empty_cart.jpeg"}
                     />
                   </a>
                   {result && (
                     <div
                       style={{
+                        width:"100%",
                         fontSize: "10px",
                         display: "flex",
                         padding: "0 10px",
@@ -141,7 +166,7 @@ const WalMartStore = ({ term, store, openConverter,setOpenConverter, user }) => 
                         alignItems: "center",
                       }}
                     >
-                      <p style={{ fontSize: "10px" }}>Price:$ {r?.price}</p>
+                      <p style={{ fontSize: "12px" }}>Price:$ {r?.price}</p>
                       <Tooltip
                         onClick={() =>
                           AddToMyWishlist(
