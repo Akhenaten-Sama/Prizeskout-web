@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import SearchComponent from './SearchComponent';
 import Prices from './Prices';
+import { useNavigate } from 'react-router-dom';
 
-
-export default function Compare({setOpenConverter,user}) {
+export default function Compare({setOpenConverter, openConverter,user}) {
 const [results, setResults] = useState(null)
-
-    useEffect(() => {
-    }, []);
+const navigate = useNavigate();
+console.log(user);
+useEffect(() => {
+  !user && navigate("/login");
+}, [user]);
+   
 
     return (
-      <div className='sub-1'>
+      <div className="sub-1">
         {user ? (
           <div
             style={{
@@ -43,6 +46,7 @@ const [results, setResults] = useState(null)
         />
         <Prices
           user={user}
+          openConverter={openConverter}
           setOpenConverter={setOpenConverter}
           result={results}
         />

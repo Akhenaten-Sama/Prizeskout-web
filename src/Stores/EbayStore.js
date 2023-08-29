@@ -10,6 +10,7 @@ import {
 
 } from "../api";
 import SocialModal from "../SharePopup";
+import ConverterModal from "../Modals/ConverterModal";
 
 const gridStyle = {
   width: "33.33333%",
@@ -18,10 +19,10 @@ const gridStyle = {
   padding: 0,
 };
 
-const EbayStore = ({ term, store, setOpenConverter, user }) => {
+const EbayStore = ({ term, store, openConverter, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-   const [openSocial, setOpenSocial] = useState(false);
+  const [openSocial, setOpenSocial] = useState(false);
   useEffect(() => {
     term?.value && term.sessionId && getResults(term);
   }, [term?.value]);
@@ -29,44 +30,45 @@ const EbayStore = ({ term, store, setOpenConverter, user }) => {
   console.log(result);
   const getResults = (term) => {
     setLoading(true);
-     requestSearch(term.value, user._id, store, term.sessionId, user.token)
-       .then((res) => {
-         if (res.status === 200) {
-            if (res.data.error) {
-              message.error(res.data.details);
-               setLoading(false);
-              return
-            }
-           console.log(res.data);
-           setResult(res.data.data.products.slice(0, 15));
-          
-         }
+    requestSearch(term.value, user._id, store, term.sessionId, user.token)
+      .then((res) => {
+        if (res.status === 200) {
+          if (res.data.error) {
+            message.error(res.data.details);
             setLoading(false);
-       })
-       .catch((err) => {
-          console.log(err.response.data.details);
-          message.error(err?.response.data.details);
-         setLoading(false);
-        
-       });
+            return;
+          }
+          console.log(res.data);
+          setResult(res.data.data.products.slice(0, 15));
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        message.error(
+          `search for ${term.value} failed ${
+            err?.response?.data ? err?.response.data.details : ""
+          }`
+        );
+        setLoading(false);
+      });
   };
-  
-  const AddToMyWishlist = (url,price,image,name, store,)=>{
-  AddToWishlist({
-    userId: user._id,
-    url: url,
-    price: price,
-    image: image,
-    store: store,
-    name: name,
-  })
-    .then((res) => {
-      message.success("added to wishlist");
+
+  const AddToMyWishlist = (url, price, image, name, store) => {
+    AddToWishlist({
+      userId: user._id,
+      url: url,
+      price: price,
+      image: image,
+      store: store,
+      name: name,
     })
-    .catch((err) => {
-      message.error("error adding item to wishlist");
-    });
-  }
+      .then((res) => {
+        message.success("added to wishlist");
+      })
+      .catch((err) => {
+        message.error("error adding item to wishlist");
+      });
+  };
   return (
     <Card
       style={{ marginTop: "5px" }}
@@ -98,7 +100,15 @@ const EbayStore = ({ term, store, setOpenConverter, user }) => {
       ) : (
         result?.map((r) => (
           <Card.Grid style={gridStyle}>
-            <div href={r?.url} style={{ fontSize: "13px" }}>
+            <div
+              href={r?.url}
+              style={{
+                fontSize: "13px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
               <p style={{ marginLeft: "10px" }}>
                 {store}{" "}
                 <Tooltip title="Share with friends!">
@@ -123,13 +133,18 @@ const EbayStore = ({ term, store, setOpenConverter, user }) => {
                   <a href={r?.url} target="_blank">
                     <img
                       alt="example"
-                      style={{ height: "60px", width: "60px" }}
+                      style={{
+                        height: "100px",
+                        margin: "0 auto",
+                        width: "100px",
+                      }}
                       src={r?.thumbnail ? r?.thumbnail : "/empty_cart.jpeg"}
                     />
                   </a>
                   {r && (
                     <div
                       style={{
+                        width: "100%",
                         fontSize: "10px",
                         display: "flex",
                         padding: "0 10px",
@@ -175,6 +190,11 @@ const EbayStore = ({ term, store, setOpenConverter, user }) => {
           </Card.Grid>
         ))
       )}
+      <ConverterModal
+        user={user}
+        openConverter={openConverter}
+        setOpenConverter={setOpenConverter}
+      />
     </Card>
   );
 };

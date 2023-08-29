@@ -4,7 +4,7 @@ import { ShoppingCartOutlined, ShareAltOutlined } from "@ant-design/icons";
 import { AddToWishlist, requestPricer, requestSearch } from "../api";
 import SocialModal from "../SharePopup";
 
-const WildCardStore = ({ term, store, setOpenConverter, user }) => {
+const WildCardStore = ({ term, store,openConverter, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [openSocial, setOpenSocial] = useState(false);

@@ -22,7 +22,7 @@ const gridStyle = {
   padding: 0,
 };
 
-const RakutenStore = ({ term, store, setOpenConverter, user }) => {
+const RakutenStore = ({ term, store,openConverter, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
    const [openSocial, setOpenSocial] = useState(false);

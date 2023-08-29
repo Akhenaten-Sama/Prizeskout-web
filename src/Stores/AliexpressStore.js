@@ -4,7 +4,7 @@ import { ShoppingCartOutlined, ShareAltOutlined } from "@ant-design/icons";
 import { AddToWishlist, deleteWishlist, requestAliExpress, requestSearch } from "../api";
 import SocialModal from "../SharePopup";
 
-const AliexpressStore = ({ term, store, setOpenConverter, user }) => {
+const AliexpressStore = ({ term, store, openConverter, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [openSocial, setOpenSocial] = useState(false);
@@ -27,7 +27,7 @@ const AliexpressStore = ({ term, store, setOpenConverter, user }) => {
     })
   };
   const gridStyle = {
-    width: "33.33333%",
+    width: "50%",
     textAlign: "center",
     height: "150px",
     padding: 0,

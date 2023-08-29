@@ -26,13 +26,14 @@ const gridStyle = {
   padding: 0,
 };
 
-const Prices = ({ result, setOpenConverter, user }) => {
+const Prices = ({ result, setOpenConverter, openConverter,user }) => {
   const getStore = (id) => {
     switch (id) {
       case "Alibaba":
         return (
           <AlibabaStore
             setOpenConverter={setOpenConverter}
+            openConverter={openConverter}
             term={result}
             store={id}
             user={user}
@@ -43,6 +44,7 @@ const Prices = ({ result, setOpenConverter, user }) => {
         return (
           <WalMartStore
             setOpenConverter={setOpenConverter}
+            openConverter={openConverter}
             term={result}
             store={id}
             user={user}
@@ -52,6 +54,7 @@ const Prices = ({ result, setOpenConverter, user }) => {
         return (
           <WildCardStore
             user={user}
+            openConverter={openConverter}
             setOpenConverter={setOpenConverter}
             term={result}
             store={id}
@@ -64,6 +67,7 @@ const Prices = ({ result, setOpenConverter, user }) => {
             user={user}
             setOpenConverter={setOpenConverter}
             term={result}
+            openConverter={openConverter}
             store={id}
           />
         );
@@ -71,6 +75,7 @@ const Prices = ({ result, setOpenConverter, user }) => {
       case "Amazon":
         return (
           <AmazonStore
+            openConverter={openConverter}
             user={user}
             setOpenConverter={setOpenConverter}
             term={result}
@@ -81,6 +86,7 @@ const Prices = ({ result, setOpenConverter, user }) => {
       case "Rakuten":
         return (
           <RakutenStore
+            openConverter={openConverter}
             setOpenConverter={setOpenConverter}
             term={result}
             store={id}
@@ -92,6 +98,7 @@ const Prices = ({ result, setOpenConverter, user }) => {
         return (
           <JingDongStore
             user={user}
+            openConverter={openConverter}
             setOpenConverter={setOpenConverter}
             term={result}
             store={id}
@@ -103,6 +110,7 @@ const Prices = ({ result, setOpenConverter, user }) => {
           <EbayStore
             setOpenConverter={setOpenConverter}
             term={result}
+            openConverter={openConverter}
             store={id}
             user={user}
           />

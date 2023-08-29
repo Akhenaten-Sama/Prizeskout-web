@@ -30,7 +30,7 @@ function App() {
           <Route
             exact
             path="/"
-            element={<Home user={user} setOpenConverter={setOpenConverter} />}
+            element={<Home user={user} openConverter={openConverter} setOpenConverter={setOpenConverter} />}
           />
           <Route path="/login" element={<LoginModal setUser={setUser} />} />
 

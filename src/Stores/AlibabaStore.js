@@ -18,7 +18,7 @@ const gridStyle = {
   height: "150px",
   padding: 0,
 };
-const AlibabaStore = ({ term, store, setOpenConverter, user }) => {
+const AlibabaStore = ({ term, store,openConverter, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {}, [term]);

@@ -11,65 +11,64 @@ const gridStyle = {
   padding: 0,
 };
 
-const WalMartStore = ({ term, store, setOpenConverter,user }) => {
+const WalMartStore = ({ term, store, openConverter,setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-   const [openSocial, setOpenSocial] = useState(false);
+  const [openSocial, setOpenSocial] = useState(false);
   useEffect(() => {
-  term?.value && term.sessionId && getResults(term);
+    term?.value && term.sessionId && getResults(term);
   }, [term?.value]);
-  
-const AddToMyWishlist = (url,price,image,name, store,)=>{
-  AddToWishlist({
-    userId: user._id,
-    url: url,
-    price: price,
-    image: image,
-    store: store,
-    name: name,
-  })
-    .then((res) => {
-      message.success("added to wishlist");
+
+  const AddToMyWishlist = (url, price, image, name, store) => {
+    AddToWishlist({
+      userId: user._id,
+      url: url,
+      price: price,
+      image: image,
+      store: store,
+      name: name,
     })
-    .catch((err) => {
-      message.error("error adding item to wishlist");
-    });
-}
+      .then((res) => {
+        message.success("added to wishlist");
+      })
+      .catch((err) => {
+        message.error("error adding item to wishlist");
+      });
+  };
   const getResults = (term) => {
     setLoading(true);
-     requestSearch(term.value, user._id, store, term.sessionId, user.token)
-       .then((res) => {
-         if (res.status === 200) {
-            if (res.data.error) {
-              message.error(res.data.details);
-               setLoading(false);
-              return
-            }
-           console.log(res.data);
-           const result =
-             res.data.data.item.props.pageProps.initialData.searchResult.itemStacks[0].items.slice(
-               0,
-               15
-             );
-           const modifiedRes = result.map((r) => {
-             return {
-               image: r.image,
-               url: `https://walmart.com${r.canonicalUrl}`,
-               price: r.price,
-               name: r.name,
-             };
-           });
-           setResult(modifiedRes);
-           setLoading(false);
-         }
+    requestSearch(term.value, user._id, store, term.sessionId, user.token)
+      .then((res) => {
+        if (res.status === 200) {
+          if (res.data.error) {
+            message.error(res.data.details);
             setLoading(false);
-       })
-       .catch((err) => {
-          console.log(err.response);
-          message.error(err?.response.data.details);
-         setLoading(false);
-        
-       });
+            return;
+          }
+          console.log(res.data);
+          const result =
+            res.data.data.item.props.pageProps.initialData.searchResult.itemStacks[0].items.slice(
+              0,
+              15
+            );
+          const modifiedRes = result.map((r) => {
+            return {
+              image: r.image,
+              url: `https://walmart.com${r.canonicalUrl}`,
+              price: r.price,
+              name: r.name,
+            };
+          });
+          setResult(modifiedRes);
+          setLoading(false);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err.response);
+        message.error(err?.response.data.details);
+        setLoading(false);
+      });
   };
 
   return (
