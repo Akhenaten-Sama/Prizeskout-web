@@ -118,6 +118,9 @@ const WildCardStore = ({ term, store,openConverter, setOpenConverter, user }) =>
               >
                 <p
                   style={{
+                    width: "90%",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
                     fontSize: "13px",
                     width: "60%",
                     textOverflow: "ellipsis",

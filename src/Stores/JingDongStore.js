@@ -115,6 +115,9 @@ const JingDongStore = ({ term, store,openConverter, setOpenConverter, user }) =>
               >
                 <p
                   style={{
+                    width: "90%",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
                     fontSize: "13px",
                     width: "50%",
                     textOverflow: "ellipsis",

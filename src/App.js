@@ -14,11 +14,9 @@ import LoginModal from "./Modals/LoginModal";
 import SubscriptionModal from "./Modals/SubsriptionsModal";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")))
   const [openConverter, setOpenConverter] = useState(false);
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
-  }, []);
+  
 
   console.log(user);
   return (

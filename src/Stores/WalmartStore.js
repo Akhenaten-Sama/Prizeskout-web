@@ -128,7 +128,18 @@ const WalMartStore = ({ term, store, openConverter,setOpenConverter, user }) => 
                   alignItems: "center",
                 }}
               >
-                <p style={{ fontSize: "13px", width:"60%", textOverflow:"ellipsis" }}>{  r.name}</p>
+                <p
+                  style={{
+                    width: "90%",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    fontSize: "13px",
+                    width: "60%",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {r.name}
+                </p>
                 <Tooltip title="Share with friends!">
                   <ShareAltOutlined onClick={() => setOpenSocial(true)} />
                 </Tooltip>
@@ -151,14 +162,18 @@ const WalMartStore = ({ term, store, openConverter,setOpenConverter, user }) => 
                   <a href={r?.url} target="_blank">
                     <img
                       alt="example"
-                      style={{ height: "100px",margin:"0 auto", width: "100px" }}
+                      style={{
+                        height: "100px",
+                        margin: "0 auto",
+                        width: "100px",
+                      }}
                       src={r?.image ? r?.image : "/empty_cart.jpeg"}
                     />
                   </a>
                   {result && (
                     <div
                       style={{
-                        width:"100%",
+                        width: "100%",
                         fontSize: "10px",
                         display: "flex",
                         padding: "0 10px",

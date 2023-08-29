@@ -98,7 +98,7 @@ const RakutenStore = ({ term, store,openConverter, setOpenConverter, user }) => 
             <div
               href={r?.url}
               style={{
-                fontSize: "1px",
+                fontSize: "12px",
                 padding: "0px 20px",
                 display: "flex",
                 flexDirection: "column",
@@ -117,6 +117,9 @@ const RakutenStore = ({ term, store,openConverter, setOpenConverter, user }) => 
               >
                 <p
                   style={{
+                    width: "90%",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
                     fontSize: "13px",
                     width: "60%",
                     textOverflow: "ellipsis",
