@@ -27,7 +27,7 @@ const AliexpressStore = ({ term, store, openConverter, setOpenConverter, user })
     })
   };
   const gridStyle = {
-    width: "50%",
+    width: "33.33%",
     textAlign: "center",
     height: "150px",
     padding: 0,
@@ -39,22 +39,20 @@ const AliexpressStore = ({ term, store, openConverter, setOpenConverter, user })
     requestSearch(term.value, user._id, store, term.sessionId, user.token)
       .then((res) => {
         if (res.status === 200) {
-           if (res.data.error) {
-             message.error(res.data.details);
-              setLoading(false);
-             return
-           }
+          if (res.data.error) {
+            message.error(res.data.details);
+            setLoading(false);
+            return;
+          }
           console.log(res.data);
           setResult(res.data.data.items.slice(0, 15));
-        
         }
-           setLoading(false);
+        setLoading(false);
       })
       .catch((err) => {
         setLoading(false);
-          console.log(err.response);
-          message.error(err?.response.data.message);
-        
+        console.log(err.response);
+        message.error(err?.response.data.message);
       });
   };
 
@@ -89,13 +87,39 @@ const AliexpressStore = ({ term, store, openConverter, setOpenConverter, user })
       ) : (
         result?.map((r) => (
           <Card.Grid style={gridStyle}>
-            <div style={{ fontSize: "13px" }}>
-              <p style={{ marginLeft: "10px" }}>
-                {store}{" "}
+            <div
+              href={r?.url}
+              style={{
+                fontSize: "1px",
+                padding: "0px 20px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  fontSize: "10px",
+                  display: "flex",
+                  padding: "0 10px",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: "13px",
+                    width: "50%",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {r.original_title}
+                </p>
                 <Tooltip title="Share with friends!">
                   <ShareAltOutlined onClick={() => setOpenSocial(true)} />
                 </Tooltip>
-              </p>
+              </div>
               {loading ? (
                 <div
                   style={{
@@ -115,13 +139,18 @@ const AliexpressStore = ({ term, store, openConverter, setOpenConverter, user })
                     {" "}
                     <img
                       alt="example"
-                      style={{ height: "60px", width: "60px" }}
+                      style={{
+                        height: "100px",
+                        margin: "0 auto",
+                        width: "100px",
+                      }}
                       src={r?.pic_url ? r?.pic_url : "/empty_cart.jpeg"}
                     />
                   </a>
                   {result && (
                     <div
                       style={{
+                        width: "100%",
                         fontSize: "10px",
                         display: "flex",
                         padding: "0 10px",

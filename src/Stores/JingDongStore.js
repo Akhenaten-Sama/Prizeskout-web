@@ -93,13 +93,39 @@ const JingDongStore = ({ term, store,openConverter, setOpenConverter, user }) =>
       ) : (
         result?.map((r) => (
           <Card.Grid style={gridStyle}>
-            <div style={{ fontSize: "13px" }}>
-              <p style={{ marginLeft: "10px" }}>
-                {store}{" "}
+            <div
+              href={r?.url}
+              style={{
+                fontSize: "1px",
+                padding: "0px 20px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  fontSize: "10px",
+                  display: "flex",
+                  padding: "0 10px",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: "13px",
+                    width: "50%",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {r.title}
+                </p>
                 <Tooltip title="Share with friends!">
                   <ShareAltOutlined onClick={() => setOpenSocial(true)} />
                 </Tooltip>
-              </p>
+              </div>
               {loading ? (
                 <div
                   style={{
@@ -121,7 +147,11 @@ const JingDongStore = ({ term, store,openConverter, setOpenConverter, user }) =>
                   >
                     <img
                       alt="example"
-                      style={{ height: "60px", width: "60px" }}
+                      style={{
+                        height: "100px",
+                        margin: "0 auto",
+                        width: "100px",
+                      }}
                       src={r?.pic_url ? r?.pic_url : "/empty_cart.jpeg"}
                     />
                   </a>
@@ -140,7 +170,7 @@ const JingDongStore = ({ term, store,openConverter, setOpenConverter, user }) =>
                         onClick={() =>
                           AddToMyWishlist(
                             `https://item.jd.com/${r?.num_iid}.html`,
-                            `¥${ r.price}`,
+                            `¥${r.price}`,
                             r.pic_url,
                             r.title,
                             store

@@ -103,18 +103,28 @@ const EbayStore = ({ term, store, openConverter, setOpenConverter, user }) => {
             <div
               href={r?.url}
               style={{
-                fontSize: "13px",
+                fontSize: "1px",
+                padding:"0px 20px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
               }}
             >
-              <p style={{ marginLeft: "10px" }}>
-                {store}{" "}
+              <div
+                style={{
+                  width: "100%",
+                  fontSize: "10px",
+                  display: "flex",
+                  padding: "0 10px",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <p style={{ fontSize: "13px" }}>{`${term.value} from Ebay`}</p>
                 <Tooltip title="Share with friends!">
                   <ShareAltOutlined onClick={() => setOpenSocial(true)} />
                 </Tooltip>
-              </p>
+              </div>
               {loading ? (
                 <div
                   style={{
