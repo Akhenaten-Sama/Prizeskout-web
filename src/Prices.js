@@ -15,7 +15,7 @@ const stores = [
   "Walmart",
   "Aliexpress",
   "Amazon",
-  "WildCard",
+  "100+ Stores",
   "Rakuten",
   "Jingdong",
 ];
@@ -26,7 +26,7 @@ const gridStyle = {
   padding: 0,
 };
 
-const Prices = ({ result, setOpenConverter, openConverter,user }) => {
+const Prices = ({ result, setOpenConverter, openConverter, user }) => {
   const getStore = (id) => {
     switch (id) {
       case "Alibaba":
@@ -50,14 +50,14 @@ const Prices = ({ result, setOpenConverter, openConverter,user }) => {
             user={user}
           />
         );
-      case "WildCard":
+      case "100+ Stores":
         return (
           <WildCardStore
             user={user}
             openConverter={openConverter}
             setOpenConverter={setOpenConverter}
             term={result}
-            store={id}
+            store={"Prices from more than 100 stores!"}
           />
         );
 

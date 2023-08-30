@@ -78,7 +78,7 @@ const WildCardStore = ({ term, store,openConverter, setOpenConverter, user }) =>
           </Button>
         </Tooltip>
       }
-      title={`${store} Prices!`}
+      title={`${store}`}
     >
       {loading ? (
         <div

@@ -68,6 +68,7 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
           setUser(JSON.parse(user));
           setConfirmLoading(false);
         setConfirmLoading(false);
+         navigate("/");
        
       })
       .catch((err) => {
