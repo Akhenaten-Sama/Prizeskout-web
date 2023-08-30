@@ -62,10 +62,11 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
     setConfirmLoading(true);
     signUp(details)
       .then((res) => {
-         localStorage.setItem("user", res.data.data);
-         const user = localStorage.getItem("user");
-         console.log(user);
-         setUser(JSON.parse(user));
+          localStorage.setItem("user", JSON.stringify(res.data.data));
+          const user = localStorage.getItem("user");
+          // console.log(user);
+          setUser(JSON.parse(user));
+          setConfirmLoading(false);
         setConfirmLoading(false);
        
       })

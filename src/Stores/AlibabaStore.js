@@ -35,14 +35,14 @@ const AlibabaStore = ({ term, store,openConverter, setOpenConverter, user }) => 
   };
   return (
     <Card
-      style={{ marginTop: "5px" }}
+      style={{ marginTop: "5px", overflow: "auto" }}
       extra={
         <Tooltip title="Currency Converter" color="#f06821">
           <Button
             style={{ width: "85px" }}
             onClick={() => setOpenConverter(true)}
           >
-           Currency
+            Currency
           </Button>
         </Tooltip>
       }
@@ -89,13 +89,15 @@ const AlibabaStore = ({ term, store,openConverter, setOpenConverter, user }) => 
                       Price: {result?.min_price}
                     </p>
                     <Tooltip
-                      onClick={()=>AddToMyWishlist(
-                        result.url,
-                        result.min_price,
-                        result.image_url,
-                        result.name,
-                        store
-                      )}
+                      onClick={() =>
+                        AddToMyWishlist(
+                          result.url,
+                          result.min_price,
+                          result.image_url,
+                          result.name,
+                          store
+                        )
+                      }
                       title="Add to wishlist"
                       color="#f06821"
                     >

@@ -79,7 +79,7 @@ const WalMartStore = ({ term, store, openConverter,setOpenConverter, user }) => 
 
   return (
     <Card
-      style={{ marginTop: "5px", flex: "initial" }}
+      style={{ marginTop: "5px", flex: "initial", overflow: "auto" }}
       extra={
         <Tooltip title="Currency Converter" color="#f06821">
           <Button

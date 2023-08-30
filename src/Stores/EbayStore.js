@@ -71,7 +71,7 @@ const EbayStore = ({ term, store, openConverter, setOpenConverter, user }) => {
   };
   return (
     <Card
-      style={{ marginTop: "5px" }}
+      style={{ marginTop: "5px", overflow: "auto" }}
       extra={
         <Tooltip title="Currency Converter" color="#f06821">
           <Button
@@ -104,7 +104,7 @@ const EbayStore = ({ term, store, openConverter, setOpenConverter, user }) => {
               href={r?.url}
               style={{
                 fontSize: "1px",
-                padding:"0px 20px",
+                padding: "0px 20px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",

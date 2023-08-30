@@ -58,7 +58,7 @@ const AliexpressStore = ({ term, store, openConverter, setOpenConverter, user })
 
   return (
     <Card
-      style={{ marginTop: "5px" }}
+      style={{ marginTop: "5px", overflow: "auto" }}
       extra={
         <Tooltip title="Currency Converter" color="#f06821">
           <Button
