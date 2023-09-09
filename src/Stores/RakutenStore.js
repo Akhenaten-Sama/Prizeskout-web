@@ -117,7 +117,7 @@ const RakutenStore = ({ term, store,openConverter, setOpenConverter, user }) => 
                   alignItems: "center",
                 }}
               >
-                <Tooltip title={r.Product.name}>
+                <Tooltip title={r.Product.productName}>
                   <p
                     style={{
                       width: "90%",
@@ -126,10 +126,10 @@ const RakutenStore = ({ term, store,openConverter, setOpenConverter, user }) => 
                       fontSize: "13px",
                       width: "60%",
                       textOverflow: "ellipsis",
-                      cursor:"pointer"
+                      cursor: "pointer",
                     }}
                   >
-                    {r.Product.name}
+                    {r.Product.productName}
                   </p>
                 </Tooltip>
                 <Tooltip title="Share with friends!">

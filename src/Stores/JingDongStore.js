@@ -32,7 +32,7 @@ const isSmall = useMediaQuery("(max-width: 700px)");
               return
             }
            console.log(res.data);
-           setResult(res.data.data.items.slice(0, 8));
+           setResult(res.data.data.items.slice(0, 20));
           
          }
             setLoading(false);

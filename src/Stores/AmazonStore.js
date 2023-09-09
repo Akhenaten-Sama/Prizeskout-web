@@ -45,7 +45,7 @@ const AmazonStore = ({
             return;
           }
           console.log(res.data);
-          setResult(res.data.data.results.slice(0, 15));
+          setResult(res.data.data.results.slice(0, 30));
         }
         setLoading(false);
       })
@@ -123,7 +123,7 @@ const AmazonStore = ({
                   alignItems: "center",
                 }}
               >
-                <Tooltip title={r.original_title}>
+                <Tooltip title={r.title}>
                   <p
                     style={{
                       width: "90%",
@@ -132,10 +132,9 @@ const AmazonStore = ({
                       fontSize: "13px",
                       width: "50%",
                       textOverflow: "ellipsis",
-                      cursor: "pointer",
                     }}
                   >
-                    {r.original_title}
+                    {r.title}
                   </p>
                 </Tooltip>
                 <Tooltip title="Share with friends!">

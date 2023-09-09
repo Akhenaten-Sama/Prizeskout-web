@@ -56,7 +56,7 @@ const WalMartStore = ({ term, store, openConverter,setOpenConverter, user }) => 
           const result =
             res.data.data.item.props.pageProps.initialData.searchResult.itemStacks[0].items.slice(
               0,
-              15
+              30
             );
           const modifiedRes = result.map((r) => {
             return {

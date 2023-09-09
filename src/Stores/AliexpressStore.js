@@ -50,7 +50,7 @@ const AliexpressStore = ({ term, store, openConverter, setOpenConverter, user })
             return;
           }
           console.log(res.data);
-          setResult(res.data.data.items.slice(0, 15));
+          setResult(res.data.data.items.slice(0, 50));
         }
         setLoading(false);
       })

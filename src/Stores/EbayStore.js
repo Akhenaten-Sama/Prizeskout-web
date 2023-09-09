@@ -43,7 +43,7 @@ const EbayStore = ({ term, store, openConverter, setOpenConverter, user }) => {
             return;
           }
           console.log(res.data);
-          setResult(res.data.data.products.slice(0, 15));
+          setResult(res.data.data.products.slice(0, 30));
         }
         setLoading(false);
       })
