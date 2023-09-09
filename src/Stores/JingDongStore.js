@@ -3,13 +3,8 @@ import { Card, Spin, Button,Tooltip, message } from "antd";
 import { ShoppingCartOutlined,ShareAltOutlined } from "@ant-design/icons";
 import { AddToWishlist, deleteWishlist, requestJingDong, requestSearch } from "../api";
 import SocialModal from "../SharePopup";
+import { useMediaQuery } from "../utils";
 
-const gridStyle = {
-  width: "33.33333%",
-  textAlign: "center",
-  height: "150px",
-  padding: 0,
-}
 
 const JingDongStore = ({ term, store,openConverter, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
@@ -18,7 +13,13 @@ const JingDongStore = ({ term, store,openConverter, setOpenConverter, user }) =>
   useEffect(() => {
     term?.value && term.sessionId && getResults(term);
   }, [term?.value]);
-
+const isSmall = useMediaQuery("(max-width: 700px)");
+ const gridStyle = {
+   width: isSmall ? "50%" : "33.33333%",
+   textAlign: "center",
+   height: "150px",
+   padding: 0,
+ };
   console.log(result);
   const getResults = (term) => {
     setLoading(true);

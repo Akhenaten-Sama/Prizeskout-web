@@ -3,13 +3,7 @@ import { Card, Spin, Button, Tooltip, message } from "antd";
 import { ShoppingCartOutlined ,ShareAltOutlined} from "@ant-design/icons";
 import { AddToWishlist, requestSearch, requestWalmart } from "../api";
 import SocialModal from "../SharePopup";
-
-const gridStyle = {
-  width: "33.33333%",
-  textAlign: "center",
-  height: "150px",
-  padding: 0,
-};
+import { useMediaQuery } from "../utils";
 
 const mobileGridStyle = {
   width: "50%",
@@ -25,6 +19,13 @@ const WalMartStore = ({ term, store, openConverter,setOpenConverter, user }) => 
     term?.value && term.sessionId && getResults(term);
   }, [term?.value]);
 
+    const isSmall = useMediaQuery("(max-width: 780px)");
+    const gridStyle = {
+      width: isSmall ? "50%" : "33.33333%",
+      textAlign: "center",
+      height: "150px",
+      padding: 0,
+    };
   const AddToMyWishlist = (url, price, image, name, store) => {
     AddToWishlist({
       userId: user._id,

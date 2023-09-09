@@ -3,6 +3,7 @@ import { Card, Spin, Button, Tooltip, message } from "antd";
 import { ShoppingCartOutlined, ShareAltOutlined } from "@ant-design/icons";
 import { AddToWishlist, deleteWishlist, requestAliExpress, requestSearch } from "../api";
 import SocialModal from "../SharePopup";
+import { useMediaQuery } from "../utils";
 
 const AliexpressStore = ({ term, store, openConverter, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
@@ -12,6 +13,8 @@ const AliexpressStore = ({ term, store, openConverter, setOpenConverter, user })
     term?.value && term.sessionId && getResults(term);
   }, [term?.value]);
 
+
+  const isSmall = useMediaQuery("(max-width: 780px)");
   const AddToMyWishlist = (url, price, image, name, store,) => {
     AddToWishlist({
       userId: user._id,
@@ -26,8 +29,10 @@ const AliexpressStore = ({ term, store, openConverter, setOpenConverter, user })
       message.error("error adding item to wishlist")
     })
   };
+
+  
   const gridStyle = {
-    width: "33.33%",
+    width:isSmall?"50%": "33.33%",
     textAlign: "center",
     height: "150px",
     padding: 0,

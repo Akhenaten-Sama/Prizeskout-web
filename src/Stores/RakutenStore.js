@@ -6,13 +6,8 @@ import {
   requestSearch,
 } from "../api";
 import SocialModal from "../SharePopup";
+import { useMediaQuery } from "../utils";
 
-const gridStyle = {
-  width: "33.33333%",
-  textAlign: "center",
-  height: "150px",
-  padding: 0,
-};
 
 const RakutenStore = ({ term, store,openConverter, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
@@ -22,6 +17,13 @@ const RakutenStore = ({ term, store,openConverter, setOpenConverter, user }) => 
     term?.value && term.sessionId && getResults(term);
   }, [term?.value]);
 
+  const isSmall = useMediaQuery("(max-width: 780px)");
+   const gridStyle = {
+     width: isSmall ? "50%" : "33.33333%",
+     textAlign: "center",
+     height: "150px",
+     padding: 0,
+   };
   console.log(result);
   const getResults = (term) => {
     setLoading(true);

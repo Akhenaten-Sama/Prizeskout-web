@@ -3,6 +3,7 @@ import { Card, Spin, Button, Tooltip, message } from "antd";
 import { ShoppingCartOutlined, ShareAltOutlined } from "@ant-design/icons";
 import { AddToWishlist, requestPricer, requestSearch } from "../api";
 import SocialModal from "../SharePopup";
+import { useMediaQuery } from "../utils";
 
 const WildCardStore = ({ term, store,openConverter, setOpenConverter, user }) => {
   const [result, setResult] = useState(null);
@@ -12,13 +13,17 @@ const WildCardStore = ({ term, store,openConverter, setOpenConverter, user }) =>
   useEffect(() => {
     term?.value && term.sessionId && getResults(term);
   }, [term?.value]);
-  const gridStyle = {
-    width: "33.33333%",
-    textAlign: "center",
-    height: "180px",
-    padding: 0,
-  };
 
+  
+    const isSmall = useMediaQuery("(max-width: 780px)");
+
+    const gridStyle = {
+      width: isSmall ? "50%" : "33.33333%",
+      textAlign: "center",
+      height: "150px",
+      padding: 0,
+    };
+ 
   const AddToMyWishlist = (url, price, image, name, store) => {
     AddToWishlist({
       userId: user._id,

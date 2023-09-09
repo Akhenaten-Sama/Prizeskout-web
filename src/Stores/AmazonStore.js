@@ -10,14 +10,15 @@ import {
 } from "../api";
 import { ShareAltOutlined } from "@ant-design/icons";
 import SocialModal from "../SharePopup";
-const gridStyle = {
-  width: "33.33333%",
-  textAlign: "center",
-  height: "150px",
-  padding: 0,
-};
+import { useMediaQuery } from "../utils";
 
-const AmazonStore = ({ term, store, openConverter, setOpenConverter, user }) => {
+const AmazonStore = ({
+  term,
+  store,
+  openConverter,
+  setOpenConverter,
+  user,
+}) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [openSocial, setOpenSocial] = useState(false);
@@ -25,31 +26,35 @@ const AmazonStore = ({ term, store, openConverter, setOpenConverter, user }) => 
     term?.value && term.sessionId && getResults(term);
   }, [term?.value]);
 
-  console.log(result);
+  const isSmall = useMediaQuery("(max-width: 780px)");
+
+  const gridStyle = {
+    width: isSmall ? "50%" : "33.33333%",
+    textAlign: "center",
+    height: "150px",
+    padding: 0,
+  };
   const getResults = (term) => {
     setLoading(true);
-     requestSearch(term.value, user._id, store, term.sessionId, user.token)
-       .then((res) => {
-         if (res.status === 200) {
-            if (res.data.error) {
-              message.error(res.data.details);
-               setLoading(false);
-              return
-            }
-           console.log(res.data);
-           setResult(res.data.data.results.slice(0, 15));
-          
-         }
+    requestSearch(term.value, user._id, store, term.sessionId, user.token)
+      .then((res) => {
+        if (res.status === 200) {
+          if (res.data.error) {
+            message.error(res.data.details);
             setLoading(false);
-       })
-       .catch((err) => {
-          console.log(err.response.data.details);
-          message.error(err?.response.data.details);
-         setLoading(false);
-        
-       });
+            return;
+          }
+          console.log(res.data);
+          setResult(res.data.data.results.slice(0, 15));
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err.response.data.details);
+        message.error(err?.response.data.details);
+        setLoading(false);
+      });
   };
-  
 
   const AddToMyWishlist = (url, price, image, name, store) => {
     AddToWishlist({
