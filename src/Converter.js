@@ -1,4 +1,4 @@
-import { Input, Modal, Result, Select, Space, Spin, message } from "antd";
+import { Input, Modal, Result,Button, Select, Space, Spin, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { convertAmount, currencySymbols } from "./api";
 const symbols = [
@@ -127,6 +127,9 @@ const Converter = ({ openConverter, setOpenConverter, user }) => {
           allowClear
           options={symbols}
         />
+      </div>
+      <div>
+        <Button onClick={handleOk} > Convert</Button>
       </div>
 
       {result && !resultsLoading ? (
