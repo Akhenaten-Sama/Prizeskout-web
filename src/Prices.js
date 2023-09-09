@@ -57,7 +57,7 @@ const Prices = ({ result, setOpenConverter, openConverter, user }) => {
             openConverter={openConverter}
             setOpenConverter={setOpenConverter}
             term={result}
-            store={"Prices from more than 100 stores!"}
+            store={"WildCard"}
           />
         );
 

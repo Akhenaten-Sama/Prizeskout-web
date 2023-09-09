@@ -36,7 +36,7 @@ const RakutenStore = ({ term, store,openConverter, setOpenConverter, user }) => 
               return
             }
           console.log(res.data);
-          setResult(res.data.data.Products.slice(0, 15));
+          setResult(res.data.data.Products.slice(0, 30));
           setLoading(false);
         }
            setLoading(false);
