@@ -23,7 +23,8 @@ const EbayStore = ({ term, store, openConverter, setOpenConverter, user }) => {
   }, [term?.value]);
 
 
-  const isSmall = useMediaQuery("(max-width: 700px)");
+  const isSmall = useMediaQuery("(max-width: 780px)");
+  console.log(isSmall);
    const gridStyle = {
      width: isSmall ? "50%" : "33.33333%",
      textAlign: "center",
@@ -74,7 +75,7 @@ const EbayStore = ({ term, store, openConverter, setOpenConverter, user }) => {
   };
   return (
     <Card
-      style={{ marginTop: "5px", overflow: "auto" }}
+      style={{  height:"350px",marginTop: "5px", overflow: "auto" }}
       extra={
         <Tooltip title="Currency Converter" color="#f06821">
           <Button

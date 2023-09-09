@@ -12,7 +12,7 @@ const Home = ({user, openConverter, setOpenConverter})=>{
           openConverter={openConverter}
           setOpenConverter={setOpenConverter}
         />
-        <Converter user={user} setOpenConverter={setOpenConverter} />
+        {user && <Converter user={user} setOpenConverter={setOpenConverter} />}
       </div>
     );
 }

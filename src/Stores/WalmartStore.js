@@ -80,7 +80,12 @@ const WalMartStore = ({ term, store, openConverter,setOpenConverter, user }) => 
 
   return (
     <Card
-      style={{ marginTop: "5px", flex: "initial", overflow: "auto" }}
+      style={{
+        height: "350px",
+        marginTop: "5px",
+        flex: "initial",
+        overflow: "auto",
+      }}
       extra={
         <Tooltip title="Currency Converter" color="#f06821">
           <Button
@@ -129,18 +134,21 @@ const WalMartStore = ({ term, store, openConverter,setOpenConverter, user }) => 
                   alignItems: "center",
                 }}
               >
-                <p
-                  style={{
-                    width: "90%",
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    fontSize: "13px",
-                    width: "60%",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {r.name}
-                </p>
+                <Tooltip title={r.name}>
+                  <p
+                    style={{
+                      width: "90%",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      fontSize: "13px",
+                      width: "60%",
+                      textOverflow: "ellipsis",
+                      cursor:"pointer"
+                    }}
+                  >
+                    {r.name}
+                  </p>
+                </Tooltip>
                 <Tooltip title="Share with friends!">
                   <ShareAltOutlined onClick={() => setOpenSocial(true)} />
                 </Tooltip>

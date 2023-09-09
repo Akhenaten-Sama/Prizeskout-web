@@ -68,7 +68,7 @@ const RakutenStore = ({ term, store,openConverter, setOpenConverter, user }) => 
   }
   return (
     <Card
-      style={{ marginTop: "5px", overflow:"auto", }}
+      style={{ height: "350px", marginTop: "5px", overflow: "auto" }}
       title={`${store} Prices!`}
       extra={
         <Tooltip title="Currency Converter" color="#f06821">
@@ -117,18 +117,21 @@ const RakutenStore = ({ term, store,openConverter, setOpenConverter, user }) => 
                   alignItems: "center",
                 }}
               >
-                <p
-                  style={{
-                    width: "90%",
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    fontSize: "13px",
-                    width: "60%",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {r.Product.name}
-                </p>
+                <Tooltip title={r.Product.name}>
+                  <p
+                    style={{
+                      width: "90%",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      fontSize: "13px",
+                      width: "60%",
+                      textOverflow: "ellipsis",
+                      cursor:"pointer"
+                    }}
+                  >
+                    {r.Product.name}
+                  </p>
+                </Tooltip>
                 <Tooltip title="Share with friends!">
                   <ShareAltOutlined onClick={() => setOpenSocial(true)} />
                 </Tooltip>

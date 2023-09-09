@@ -72,7 +72,7 @@ const WildCardStore = ({ term, store,openConverter, setOpenConverter, user }) =>
 
   return (
     <Card
-      style={{ marginTop: "5px", overflow: "auto" }}
+      style={{ height: "350px", marginTop: "5px", overflow: "auto" }}
       extra={
         <Tooltip title="Currency Converter" color="#f06821">
           <Button
@@ -121,7 +121,8 @@ const WildCardStore = ({ term, store,openConverter, setOpenConverter, user }) =>
                   alignItems: "center",
                 }}
               >
-                <p
+                 <Tooltip title={r.title}>
+                  <p
                   style={{
                     width: "90%",
                     overflow: "hidden",
@@ -129,10 +130,12 @@ const WildCardStore = ({ term, store,openConverter, setOpenConverter, user }) =>
                     fontSize: "13px",
                     width: "60%",
                     textOverflow: "ellipsis",
+                    cursor:"pointer"
                   }}
                 >
                   {r.title}
                 </p>
+                </Tooltip>
                 <Tooltip title="Share with friends!">
                   <ShareAltOutlined onClick={() => setOpenSocial(true)} />
                 </Tooltip>
