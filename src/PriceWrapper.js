@@ -111,7 +111,7 @@ export default function ThreeTierPricing({name, limit, setMode, setAmount, curre
               <ListIcon as={FaCheckCircle} color="green.500" />
               Ebay
             </ListItem>
-            {name !== "Basic" ? (
+            {name !== "Basic" &&name !=="Trial"? (
               <>
                 {" "}
                 <ListItem>
