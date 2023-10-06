@@ -92,7 +92,7 @@ const LoginModal = ({ openLogin, setOpenLogin, setUser }) => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          margin: "50px",
+          margin: "20px",
           textAlign: "center",
         }}
       >

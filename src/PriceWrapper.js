@@ -64,7 +64,7 @@ export default function ThreeTierPricing({name, limit, setMode, setAmount, curre
           </Box>
         )}
         <Box py={4} px={12}>
-          <Text fontWeight="500" justifyContent="center"  fontSize="2xl">
+          <Text fontWeight="500" justifyContent="center" fontSize="2xl">
             {current ? `${name} ` : ""}
           </Text>
           <HStack justifyContent="center">
@@ -88,48 +88,72 @@ export default function ThreeTierPricing({name, limit, setMode, setAmount, curre
                 {limit} Searches Left
               </ListItem>
             )}
+            <ListItem fontWeight="500">
+              <ListIcon as={FaCheckCircle} color="green.500" />
+              Price Comparison
+            </ListItem>
             {!current && (
-              <ListItem fontSize="2xl" fontWeight="700">
+              <ListItem  fontWeight="500">
                 <ListIcon as={FaCheckCircle} color="green.500" />
-                {limit} Searches
+                {limit} Product Searches
               </ListItem>
             )}
             <ListItem>
               <ListIcon as={FaCheckCircle} color="green.500" />
-              Amazon Search
+              Amazon
             </ListItem>
-            ]
+
             <ListItem>
               <ListIcon as={FaCheckCircle} color="green.500" />
-              Aliexpress Search
-            </ListItem>
-            <ListItem>
-              <ListIcon as={FaCheckCircle} color="green.500" />
-              Ebay Search
+              Walmart
             </ListItem>
             <ListItem>
               <ListIcon as={FaCheckCircle} color="green.500" />
-              Walmart Search
+              Ebay
             </ListItem>
-            <ListItem>
+            {name !== "Basic" ? (
+              <>
+                {" "}
+                <ListItem>
+                  <ListIcon as={FaCheckCircle} color="green.500" />
+                  Aliexpress
+                </ListItem>
+                <ListItem>
+                  <ListIcon as={FaCheckCircle} color="green.500" />
+                  Rakuten & Jingdong
+                </ListItem>{" "}
+              </>
+            ) : null}
+            <ListItem  fontWeight="600">
               <ListIcon as={FaCheckCircle} color="green.500" />
-              Rakuten Search
+              {name == "Basic"
+                ? "Limited"
+                : name == "Standard"
+                ? "Upper"
+                : "Unlimited"}{" "}
+              Access To Wishlist
             </ListItem>
-            <ListItem>
+            <ListItem  fontWeight="600">
               <ListIcon as={FaCheckCircle} color="green.500" />
-              JingDong Search
+              Social Sharing
+            </ListItem>
+            <ListItem  fontWeight="600">
+              <ListIcon as={FaCheckCircle} color="green.500" />
+              Currency Converter
             </ListItem>
           </List>
           <Box w="80%" pt={7}>
-          { !current && <Button
-              disabled={current}
-              onClick={handleSubscribe}
-              w="full"
-              colorScheme="red"
-              variant={name == "Standard" ? null : "outline"}
-            >
-              Start
-            </Button>}
+            {!current && (
+              <Button
+                disabled={current}
+                onClick={handleSubscribe}
+                w="full"
+                colorScheme="red"
+                variant={name == "Standard" ? null : "outline"}
+              >
+                Start
+              </Button>
+            )}
           </Box>
         </VStack>
       </Box>
