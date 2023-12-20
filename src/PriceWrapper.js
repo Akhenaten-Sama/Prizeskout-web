@@ -36,7 +36,7 @@ function PriceWrapper(props) {
 
 export default function ThreeTierPricing({name, limit, setMode, setAmount, current, amount}) {
      const handleSubscribe = () => {
-       setAmount({amount, name});
+       setAmount({amount:amount/100, name});
        setMode("checkout");
      };
     const redish = useColorModeValue("red.300", "red.700");
@@ -74,7 +74,7 @@ export default function ThreeTierPricing({name, limit, setMode, setAmount, curre
               $
             </Text>
             <Text fontSize="5xl" fontWeight="900">
-              {amount }
+              {amount/100 }
             </Text>
             {current ? "Paid" : ""}
           </HStack>
