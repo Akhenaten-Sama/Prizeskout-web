@@ -18,6 +18,8 @@ import { FaCheckCircle } from "react-icons/fa";
 function PriceWrapper(props) {
   const { children } = props;
 
+  
+
   return (
     <Box
       mb={5}
@@ -72,7 +74,7 @@ export default function ThreeTierPricing({name, limit, setMode, setAmount, curre
               $
             </Text>
             <Text fontSize="5xl" fontWeight="900">
-              {amount / 100}
+              {amount }
             </Text>
             {current ? "Paid" : ""}
           </HStack>
